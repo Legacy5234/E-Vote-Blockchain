@@ -1,0 +1,188 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!--Local Government Area pop up base on State selected -->
+<script>
+    $(document).ready(function() {
+        $('#id_state_of_origin').change(function() {
+            const stateId = $(this).val();
+            const url = "{% url 'b_staffapp:ajax_load_lgas' %}";
+
+            $.ajax({
+                url: url,
+                data: {
+                    'state_id': stateId
+                },
+                success: function(data) {
+                    const $lgaSelect = $('#id_local_government_area');
+                    $lgaSelect.empty();
+                    $lgaSelect.append('<option value="">---------</option>');
+                    $.each(data, function(index, lga) {
+                        $lgaSelect.append('<option value="' + lga.id + '">' + lga.name + '</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>
+<!--Profile Edit for already selected LGA base on State selected-->
+<script>
+    $(document).ready(function () {
+        // This runs on page load if editing and state_of_origin is selected
+        const selectedState = $('#id_state_of_origin').val();
+        const selectedLGA = "{{ form.instance.lga_of_origin.id|default_if_none:'' }}";  // Set this server-side
+
+        if (selectedState) {
+            $.ajax({
+                url: "{% url 'b_staffapp:ajax_load_lgas' %}",
+                data: {
+                    'state_id': selectedState
+                },
+                success: function (data) {
+                    const lgaSelect = $('#id_lga_of_origin');
+                    lgaSelect.empty();
+                    lgaSelect.append('<option value="">Select LGA</option>');
+
+                    data.forEach(function (item) {
+                        const selected = item.id == selectedLGA ? 'selected' : '';
+                        lgaSelect.append('<option value="' + item.id + '" ' + selected + '>' + item.lga_name + '</option>');
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+
+
+
+
+<!--Departments pop up base on College selection-->
+<script>
+    $(document).ready(function () {
+        $('#id_college').change(function () {
+            const collegeId = $(this).val();
+            const departmentSelect = $('#id_department');
+            departmentSelect.empty();
+
+            if (collegeId) {
+                $.ajax({
+                    url: "{% url 'b_staffapp:ajax_load_departments' %}",
+                    data: {
+                        'college_id': collegeId
+                    },
+                    success: function (data) {
+                        departmentSelect.append('<option value="">Select Department</option>');
+                        data.forEach(function (item) {
+                            departmentSelect.append('<option value="' + item.id + '">' + item.department_name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                departmentSelect.append('<option value="">Select Department</option>');
+            }
+        });
+    });
+</script>
+<!--Profile Edit for already selected Department base on College selected-->
+<script>
+    $(document).ready(function () {
+        const selectedCollege = $('#id_college').val();
+        const selectedDepartment = "{{ form.instance.department.id|default_if_none:'' }}";
+
+        if (selectedCollege) {
+            $.ajax({
+                url: "{% url 'b_staffapp:ajax_load_departments' %}",
+                data: {
+                    'college_id': selectedCollege
+                },
+                success: function (data) {
+                    const departmentSelect = $('#id_department');
+                    departmentSelect.empty();
+                    departmentSelect.append('<option value="">Select Department</option>');
+
+                    data.forEach(function (item) {
+                        const selected = item.id == selectedDepartment ? 'selected' : '';
+                        departmentSelect.append('<option value="' + item.id + '" ' + selected + '>' + item.department_name + '</option>');
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+
+<!--Salary Scale Selector-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const salaryScaleField = document.getElementById("id_salary_scale");
+        const levelStepWrapper = document.getElementById("level-step-wrapper");
+        const consolidatedWrapper = document.getElementById("consolidated-wrapper");
+
+        function toggleSalaryFields() {
+            const selected = salaryScaleField.value;
+
+            if (selected === "Consolidated") {
+                levelStepWrapper.style.display = "none";
+                consolidatedWrapper.style.display = "flex";
+            } else {
+                levelStepWrapper.style.display = "flex";
+                consolidatedWrapper.style.display = "none";
+            }
+        }
+
+        salaryScaleField.addEventListener("change", toggleSalaryFields);
+
+        // Run on initial load
+        toggleSalaryFields();
+    });
+</script>
+
+
+<!--IUTSS OR IUNTSS Selector-->
+<script>
+    const radios = document.getElementsByName('staff_type');
+    const is_iutss = document.getElementById('is_iutss');
+    const is_iuntss = document.getElementById('is_iuntss');
+
+    function updateBooleans() {
+        if (radios[0].checked) {
+            is_iutss.value = "on";
+            is_iuntss.value = "";
+        } else if (radios[1].checked) {
+            is_i_iutss.value = "";
+            is_iuntss.value = "on";
+        }
+    }
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', updateBooleans);
+    });
+
+    window.addEventListener('DOMContentLoaded', updateBooleans);
+</script>
+
+
+<!--DEAN AND HOD ROLE POSITION ASSIGNMENT SCRIPT-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let roleField = document.querySelector("select[name='role']");
+        let collegeField = document.querySelector("select[name='college']");
+        let departmentField = document.querySelector("select[name='department']");
+
+        function toggleFields() {
+            let role = roleField.value;
+            collegeField.disabled = !(role === 'Dean' || role === 'College Officer');
+            departmentField.disabled = (role !== 'HOD');
+        }
+
+        roleField.addEventListener('change', toggleFields);
+        toggleFields();
+    });
+</script>
+
+
+
+    
+    
+    

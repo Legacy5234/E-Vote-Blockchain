@@ -1,0 +1,27 @@
+{% extends 'layouts/profile_layout.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Upcoming Elections Preview -->
+    <section class="py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">Current Elections</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                {% for election in elections %}
+                <div class="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">{{ election.title }}</h3>
+                    <p class="text-gray-600 mb-4">{{ election.description|truncatewords:20 }}</p>
+                    <p class="text-sm text-gray-500 mb-2">🗓️ Starts: {{ election.start_date|date:"F j, Y, g:i a" }}</p>
+                    <p class="text-sm text-gray-500 mb-4">🛑 Ends: {{ election.end_date|date:"F j, Y, g:i a" }}</p>
+                    <a href="" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 transition">
+                        View Details
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-center col-span-3 text-gray-500">No active elections at the moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

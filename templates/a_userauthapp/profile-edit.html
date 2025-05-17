@@ -1,0 +1,80 @@
+{% extends 'layouts/layout_b.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section class="max-w-7xl  p-10 bg-white shadow-2xl rounded-3xl mt-12">
+
+    <h1 class="text-4xl font-bold mb-10 text-center font1">Edit Profile</h1>
+
+    <div class="text-center flex flex-col items-center mb-10">
+        {% if profile.image %}
+        <img src="{{ profile.image.url }}"
+            id="profileimage"
+            alt="Profile Image"
+            class="w-44 h-44 rounded-full border-4 border-indigo-300 shadow-lg object-cover">
+        {% else %}
+        <img src="{% static 'images/avatar_default.svg' %}"
+            id="profileimage"
+            alt="Profile Image"
+            class="w-44 h-44 rounded-full border-4 border-indigo-300 shadow-lg object-cover">
+        {% endif %}
+
+        <div class="text-center mt-5">
+        <h2 id="fullname" class="text-2xl font-semibold">{{ profile.full_name }}</h2>
+        <div class="text-gray-500 text-sm">@{{ user.username }}</div>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-8 max-w-3xl mx-auto">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="flex flex-wrap gap-4 justify-between">
+        <button type="submit" class="flex-1 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-lg">Save Changes</button>
+        <a href="{{ request.META.HTTP_REFERER|default:'#' }}" class="flex-1 px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-lg text-center">Cancel</a>
+        </div>
+    </form>
+
+    <div class="text-center mt-12">
+        <a href="#" class="text-red-500 hover:underline">Delete Profile</a>
+    </div>
+
+    </section>
+
+    <script>
+        // Update profile image preview
+        const fileInput = document.querySelector('input[type="file"]');
+        const image = document.querySelector('#profileimage');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file && file.type.includes('image')) {
+                    const url = URL.createObjectURL(file);
+                    image.src = url;
+                }
+            });
+        }
+
+        // Live name update
+        const firstNameInput = document.getElementById('id_first_name');
+        const surnameInput = document.getElementById('id_surname');
+        const middlenameInput = document.getElementById('id_middle_name');
+        const fullnameOutput = document.getElementById('fullname');
+
+        function updateFullname() {
+            const firstName = firstNameInput ? firstNameInput.value : '';
+            const surname = surnameInput ? surnameInput.value : '';
+            const middlename = middlenameInput ? middlenameInput.value : '';
+
+            fullnameOutput.innerText = `${surname} ${firstName} ${middlename}`.trim();
+        }
+
+        if (firstNameInput) firstNameInput.addEventListener('input', updateFullname);
+        if (surnameInput) surnameInput.addEventListener('input', updateFullname);
+        if (middlenameInput) middlenameInput.addEventListener('input', updateFullname);
+
+    </script>
+
+{% endblock %}

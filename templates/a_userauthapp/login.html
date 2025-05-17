@@ -1,0 +1,77 @@
+{% extends 'layouts/layout_b.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <section class="flex items-center justify-center bg-slate-800 text-white px-4 py-15">
+        <div class="w-full max-w-3xl bg-gray-800 p-10 rounded-2xl shadow-2xl">
+            <h2 class="text-4xl font-extrabold text-center mb-8">Welcome Back</h2>
+
+            <form method="POST" class="space-y-7">
+            {% csrf_token %}
+
+            <!-- Email Field -->
+            <div>
+                <label for="email" class="block mb-1 text-sm font-semibold">Email</label>
+                <div class="relative">
+                    <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                    <input type="email" id="email" name="email"
+                        class="w-full pl-12 p-3 rounded-lg text-black focus:outline-none"
+                        placeholder="Enter your email" required>
+                </div>
+            </div>
+
+
+            <!-- Password Field -->
+            <div>
+                <label for="password" class="block mb-1 text-sm font-semibold">Password</label>
+                <div class="relative">
+                <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                <input type="password" id="password" name="password"
+                        class="w-full pl-12 pr-12 p-3 rounded-lg text-black focus:outline-none"
+                        placeholder="Enter your password" required>
+                <button type="button"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 toggle-password"
+                        data-target="password">
+                    <i class="fas fa-eye text-lg"></i>
+                </button>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-300">
+                Log In
+            </button>
+            </form>
+
+            <!-- Register Link -->
+            <p class="text-center text-gray-400 mt-6 text-sm">
+            Don’t have an account?
+            <a href="{% url 'a_userauthapp:account-create' %}" class="text-indigo-400 hover:underline">Register now</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Password Toggle Script -->
+    <script>
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+        const targetId = button.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        const icon = button.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+        });
+    });
+    </script>
+{% endblock %}
