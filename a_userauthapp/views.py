@@ -8,13 +8,6 @@ from . models import Voter_User
 
 # Create your views here.
 #---------------------------------------------------------------------------------------------------------
-# HOMEPAGE VIEW
-#---------------------------------------------------------------------------------------------------------
-def homepage(request):
-    return render(request, 'a_userauthapp/homepage.html')
-
-
-#---------------------------------------------------------------------------------------------------------
 # ACCOUNT CREATE VIEW
 #---------------------------------------------------------------------------------------------------------
 def create_account(request):
@@ -58,7 +51,7 @@ def login_view(request):
             if user.is_active:
                 login(request, user)
                 messages.success(request, f'Welcome {user.username} to Vote-Chain')
-                return redirect('a_userauthapp:home')
+                return redirect('b_voteapp:home')
             else:
                 messages.error(request, 'This account has been suspended..')
         else:
