@@ -16,10 +16,15 @@
         </p>
 
         {% if not request.user.is_authenticated %}
-            <a href="{% url 'a_userauthapp:account-create' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl transition">
+            <a href="{% url 'a_userauthapp:account-create' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl transition mr-5 mb-5">
                 Get Started
             </a>
         {% endif %}
+
+        <a href="{% url 'b_voteapp:blockchain_explorer' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl transition mb-5">
+                Blockchain Explorer
+        </a>
+
     </div>
 
 </section>

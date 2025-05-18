@@ -26,8 +26,11 @@ class Voter(models.Model):
 
 
 class Candidate(models.Model):
+    election = models.ForeignKey(Election, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='VoteChain-candidateimage/', null=True)
     name = models.CharField(max_length=100)
     party = models.CharField(max_length=100)
+    description = models.TextField(null=True)
 
 
 class Vote(models.Model):

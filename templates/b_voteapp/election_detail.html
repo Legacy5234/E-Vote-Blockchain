@@ -38,6 +38,14 @@
       </div>
     </div>
 
+    <!-- Vote Button (only show if active) -->
+    {% if status == 'Active' %}
+      <a href="{% url 'b_voteapp:cast_vote' %}" 
+         class="inline-block mb-6 bg-green-600 text-white px-10 py-3 rounded-xl hover:bg-green-700 transition font-semibold shadow-lg mr-2">
+        Vote Now
+      </a>
+    {% endif %}
+
     <!-- Back Button -->
     <a href="{% url 'b_voteapp:home' %}" 
        class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 transition font-semibold shadow-lg mb-5">
@@ -45,5 +53,6 @@
     </a>
   </div>
 </section>
+
 
 {% endblock %}

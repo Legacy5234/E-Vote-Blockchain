@@ -6,6 +6,9 @@ from django.contrib import messages
 from . forms import SignUpForm, ProfileForm
 from . models import Voter_User
 
+from django.db import transaction
+import uuid 
+
 # Create your views here.
 #---------------------------------------------------------------------------------------------------------
 # ACCOUNT CREATE VIEW

@@ -1,0 +1,47 @@
+{% extends 'layouts/layout_b.html' %}
+
+{% block content %}
+
+<section class="py-20 bg-gradient-to-b from-gray-50 to-white min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-10 sm:p-14 transition-all duration-300">
+    
+    <h2 class="text-4xl font-extrabold mb-10 text-indigo-700 text-center tracking-tight font-sans">🗳️ Cast Your Vote</h2>
+
+    <form method="POST" action="{% url 'b_voteapp:cast_vote' %}" class="space-y-8">
+      {% csrf_token %}
+
+      {% for candidate in candidates %}
+      <label class="flex items-center p-5 border border-gray-200 rounded-2xl cursor-pointer hover:shadow-lg transition duration-300 ease-in-out group">
+        <input
+          type="radio"
+          name="candidate_id"
+          value="{{ candidate.id }}"
+          class="form-radio text-indigo-600 scale-125 focus:ring-2 focus:ring-indigo-400 transition duration-200"
+          required
+        />
+        <div class="ml-6 flex items-center space-x-4">
+          <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}"
+               class="w-20 h-20 rounded-full object-cover shadow-sm group-hover:scale-105 transition duration-300" />
+          <div>
+            <h3 class="text-2xl font-semibold text-slate-800">{{ candidate.name }}</h3>
+            <p class="text-gray-600 text-sm mt-1 leading-snug">
+              {{ candidate.description }}
+            </p>
+          </div>
+        </div>
+      </label>
+      {% empty %}
+      <p class="text-center text-gray-500 text-lg">No candidates available at the moment.</p>
+      {% endfor %}
+
+      <button type="submit"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-semibold py-4 rounded-2xl shadow-md transition duration-300 tracking-wide">
+        ✅ Submit Vote
+      </button>
+    </form>
+
+  </div>
+</section>
+
+
+{% endblock %}

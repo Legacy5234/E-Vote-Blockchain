@@ -24,7 +24,9 @@
     x-transition:enter-end="opacity-100 translate-y-0">
         <ul class="flex items-center navitems flex-col md:flex-row gap-8 md:gap-0 justify-center h-full -translate-y-10 md:translate-y-0">
            
-            <li><a href="">Admin Dashboard</a></li>
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+                <li><a href="{% url 'admin-dashbaord' %}">Admin Dashboard</a></li>
+            {% endif %}
 
             <li x-data="{ dropdownOpen: false }" class="relative">
                 <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">

@@ -1,0 +1,60 @@
+{% extends 'layouts/profile_layout.html' %}
+
+{% block content %}
+    <div class="max-w-6xl mx-auto py-8">
+    <h1 class="text-4xl font-extrabold mb-10 text-gray-900 flex items-center gap-3">
+        🔗 <span>Blockchain Explorer</span>
+    </h1>
+
+    <div class="space-y-8">
+        {% for block in blocks %}
+        <div class="border border-gray-200 rounded-2xl shadow-lg p-6 bg-white">
+        <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center space-x-3">
+            <span class="text-white bg-indigo-600 rounded-full px-3 py-1 text-sm font-semibold">Block #{{ block.index }}</span>
+            <span class="text-xs text-gray-500">⏰ {{ block.formatted_timestamp|date:"M d, Y H:i" }}</span>
+            <span class="text-xs font-semibold {% if block.is_valid %}text-green-600{% else %}text-red-600{% endif %}">
+                {% if block.is_valid %}✅ Valid{% else %}❌ Corrupt{% endif %}
+            </span>
+            </div>
+            <div class="flex items-center space-x-4 text-xs text-gray-500">
+            <span>📝 Votes: <span class="font-semibold">{{ block.vote_count }}</span></span>
+            <span>⚙️ Nonce: <span class="font-semibold">{{ block.nonce }}</span></span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+            <div>
+            <p>
+                <span class="font-semibold">🔒 Hash:</span>
+                <code class="break-words text-green-600 cursor-pointer hover:underline" onclick="navigator.clipboard.writeText('{{ block.hash }}')">{{ block.hash }}</code>
+            </p>
+            <p>
+                <span class="font-semibold">🔗 Previous Hash:</span>
+                <code class="break-words text-yellow-600 cursor-pointer hover:underline" onclick="navigator.clipboard.writeText('{{ block.previous_hash }}')">{{ block.previous_hash }}</code>
+            </p>
+            </div>
+
+            <div>
+            <h4 class="text-base font-bold mb-3 text-gray-800">🗳️ Votes:</h4>
+            {% if block.parsed_votes %}
+            <ul class="space-y-2">
+                {% for vote in block.parsed_votes %}
+                <li class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                <p><span class="font-semibold">🆔 Voter:</span> {{ vote.voter_username }}</p>
+                <p><span class="font-semibold">🎯 Candidate:</span> {{ vote.candidate_name }} ({{ vote.candidate_party }})</p>
+                <p><span class="font-semibold">🏷️ Election:</span> {{ vote.election_name }}</p>
+                <p class="text-xs text-gray-500">📅 {{ vote.timestamp|date:"M d, Y H:i" }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-gray-500 italic">No votes recorded in this block.</p>
+            {% endif %}
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

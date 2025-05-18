@@ -36,3 +36,9 @@ class ElectionAdmin(admin.ModelAdmin):
 class BlockAdmin(admin.ModelAdmin):
     list_display = ('index', 'timestamp', 'previous_hash', 'hash', 'nonce')
     readonly_fields = ('index', 'timestamp', 'votes', 'previous_hash', 'hash', 'nonce')
+
+
+
+
+
+

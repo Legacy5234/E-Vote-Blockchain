@@ -1,7 +1,11 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
-from .models import Voter_User, Profile
+
+from . models import Voter_User, Profile
+from b_voteapp.models import Voter
+
+import uuid
 
 # Create or update profile when a new user is created or updated
 @receiver(post_save, sender=Voter_User)
@@ -21,3 +25,14 @@ def sync_profile_to_user(sender, instance, created, **kwargs):
         user = instance.user
         if user.email != instance.email:
             Voter_User.objects.filter(id=user.id).update(email=instance.email)
+
+
+
+@receiver(post_save, sender=Voter_User)
+def create_voter_for_new_user(sender, instance, created, **kwargs):
+    if created:
+        Voter.objects.create(
+            user=instance,
+            voter_id=str(uuid.uuid4()),
+            is_verified=True,
+        )
