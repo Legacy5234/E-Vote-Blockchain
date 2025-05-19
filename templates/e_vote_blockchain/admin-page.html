@@ -23,13 +23,13 @@
             <div class="flex flex-wrap justify-center gap-4 mt-6">
                 <!-- Create Appointment -->
                 <div class="relative">
-                    <a href=""
+                    <a href="{% url 'create_election' %}"
                     class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm md:text-base px-5 py-2.5 rounded-xl shadow transition duration-200">
                         <i class="fas fa-calendar-plus"></i> Create Election
                     </a>
                 </div>
 
-                <a href="" class="flex items-center gap-2 h-12 px-5 bg-yellow-600 hover:bg-yellow-700 text-white text-base font-semibold rounded-xl shadow transition duration-200">
+                <a href="{% url 'create_candidate' %}" class="flex items-center gap-2 h-12 px-5 bg-yellow-600 hover:bg-yellow-700 text-white text-base font-semibold rounded-xl shadow transition duration-200">
                     <i class="fas fa-users"></i> Add Candidates
                 </a>
             

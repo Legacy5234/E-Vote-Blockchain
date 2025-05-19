@@ -1,120 +1,119 @@
 {% extends 'layouts/layout_b.html' %}
 {% load static %}
 
-{% block content %}    
+{% block content %}
+
 <!-- Profile Container -->
-<div class="max-w-7xl  p-4 sm:p-6 bg-gray-50 shadow-lg rounded-lg mt-8">
+<div class="max-w-7xl mx-auto p-4 sm:p-6 bg-gray-50 shadow-lg rounded-3xl mt-12 
+            animate-[fadebg_5s_infinite_alternate]">
 
   <!-- Profile Header -->
-  <div class="bg-white rounded-3xl shadow-2xl 
-              px-6 sm:px-8 md:px-12 lg:px-16 
-              pt-10 pb-8 mb-10 text-center 
-              w-full 
-              max-w-full sm:max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto border border-gray-200">
+  <div class="bg-white rounded-3xl shadow-2xl px-8 sm:px-14 py-10 mb-14 text-center w-full max-w-3xl mx-auto border border-gray-200">
 
     <!-- Profile Image -->
     <div class="flex justify-center mb-6">
-        {% if profile.image %}
-            <img src="{{ profile.image.url }}"
-                alt="Profile Image"
-                class="w-36 h-36 rounded-full border-4 border-indigo-200 shadow-lg object-cover">
-        {% else %}
-            <img src="{% static 'images/avatar_default.svg' %}"
-            alt="Profile Image"
-            class="w-36 h-36 rounded-full border-4 border-indigo-200 shadow-lg object-cover">
-        {% endif %}
+      {% if profile.image %}
+        <img src="{{ profile.image.url }}" alt="Profile Image"
+          class="w-36 h-36 rounded-full border-4 border-indigo-300 shadow-xl object-cover">
+      {% else %}
+        <img src="{% static 'images/avatar_default.svg' %}" alt="Profile Image"
+          class="w-36 h-36 rounded-full border-4 border-indigo-300 shadow-xl object-cover">
+      {% endif %}
     </div>
 
     <!-- User Name -->
-    <h2 class="text-3xl font-extrabold text-gray-900 leading-tight mb-3">
-        {{ profile.surname }} {{ profile.first_name }} {{ profile.middle_name }}
+    <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-3">
+      {{ profile.surname }} {{ profile.first_name }} {{ profile.middle_name }}
     </h2>
 
     <!-- Username -->
-    <p class="text-gray-500 text-md mb-4">@{{ profile.user.username }}</p>
+    <p class="text-gray-500 text-lg mb-4">@{{ profile.user.username }}</p>
 
     <!-- Location -->
+    {% if profile.location %}
     <div class="flex items-center justify-center text-gray-500 mb-3">
-        <img class="h-5 mr-2 opacity-70" src="https://img.icons8.com/material-outlined/24/000000/marker.png" alt="Location Icon">
-        <span>{{ profile.location }}</span>
+      <img class="h-5 mr-2 opacity-70" src="https://img.icons8.com/material-outlined/24/000000/marker.png" alt="Location Icon">
+      <span>{{ profile.location }}</span>
     </div>
+    {% endif %}
 
     <!-- Bio -->
-    <p class="text-gray-600 text-base mb-6 px-4 leading-relaxed">
-        {{ profile.bio }}
+    <p class="text-gray-600 text-base mb-6 px-6 leading-relaxed">
+      {{ profile.bio }}
     </p>
 
     <!-- Edit Profile Button -->
     <a href="{% url 'a_userauthapp:profile-edit' %}"
-        class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-xl transition shadow-md">
-        Edit Profile
+      class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl transition shadow-lg">
+      ✏️ Edit Profile
     </a>
 
+  </div>
+
+  <!-- Personal Information Section -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-gray-700 text-lg leading-relaxed">
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-calendar-alt text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Date of Birth:</span><br>{{ profile.date_of_birth }}</p>
     </div>
 
-    <!-- Personal Information Section -->
-    <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow p-8 space-y-8 mb-10">
-        <h2 class="text-3xl font-bold text-blue-900 flex items-center justify-center gap-3">
-            <i class="fas fa-id-card"></i>
-            Personal Information
-        </h2>
-    
-        <!-- Responsive grid layout -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-700 text-[1rem] sm:text-[1.05rem] leading-relaxed">
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-calendar-alt text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Date of Birth:</span><br> {{ profile.date_of_birth }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-venus-mars text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Gender:</span><br> {{ profile.gender }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-ring text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Marital Status:</span><br> {{ profile.staff_marital_status }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-flag text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Nationality:</span><br> {{ profile.nationality }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-map-marker-alt text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">State of Origin:</span><br> {{ profile.state_of_origin }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-city text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Local Government Area:</span><br> {{ profile.local_government_area }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-home text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Permanent Address:</span><br> {{ profile.permanent_address }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-phone-alt text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Phone Number:</span><br> {{ profile.phone_number }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-envelope text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Institution Email:</span><br> {{ profile.email }}</p>
-            </div>
-    
-            <div class="flex flex-col items-center text-center">
-                <i class="fas fa-envelope text-blue-800 text-lg mb-2"></i>
-                <p><span class="font-semibold">Personal Email:</span><br> {{ profile.personal_email }}</p>
-            </div>
-        </div>
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-venus-mars text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Gender:</span><br>{{ profile.gender }}</p>
     </div>
-       
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-ring text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Marital Status:</span><br>{{ profile.staff_marital_status }}</p>
+    </div>
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-flag text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Nationality:</span><br>{{ profile.nationality }}</p>
+    </div>
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-map-marker-alt text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">State of Origin:</span><br>{{ profile.state_of_origin }}</p>
+    </div>
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-city text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Local Government Area:</span><br>{{ profile.local_government_area }}</p>
+    </div>
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-home text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Permanent Address:</span><br>{{ profile.permanent_address }}</p>
+    </div>
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-phone-alt text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Phone Number:</span><br>{{ profile.phone_number }}</p>
+    </div>
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-envelope text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Institution Email:</span><br>{{ profile.email }}</p>
+    </div>
+
+    <div class="flex flex-col items-center text-center">
+      <i class="fas fa-envelope text-indigo-700 text-2xl mb-3"></i>
+      <p><span class="font-semibold">Personal Email:</span><br>{{ profile.personal_email }}</p>
+    </div>
+
+  </div>
+
 </div>
 
+<!-- Inline Keyframes for Background Animation -->
+<style>
+  @keyframes fadebg {
+    0% { background-color: #f9fafb; }
+    50% { background-color: #eef2ff; }
+    100% { background-color: #f9fafb; }
+  }
+</style>
 
 {% endblock %}

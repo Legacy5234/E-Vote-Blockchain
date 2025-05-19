@@ -1,0 +1,54 @@
+{% extends 'layouts/layout_b.html' %}
+
+{% block content %}
+<div class="py-20 min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl w-full space-y-8 p-8 bg-white rounded-3xl shadow-2xl border border-gray-200 backdrop-blur-lg bg-opacity-90 transition duration-500">
+
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold text-gray-900">✏️ Edit Candidate</h2>
+      <p class="mt-2 text-sm text-gray-600">Updating: <strong>{{ candidate.name }}</strong></p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6 animate-fade-in-down">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <div>
+        <label class="block text-left text-gray-700 font-medium mb-2">Election</label>
+        {{ form.election }}
+        {{ form.election.errors }}
+      </div>
+
+      <div>
+        <label class="block text-left text-gray-700 font-medium mb-2">Image</label>
+        {{ form.image }}
+        {{ form.image.errors }}
+      </div>
+
+      <div>
+        <label class="block text-left text-gray-700 font-medium mb-2">Name</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+
+      <div>
+        <label class="block text-left text-gray-700 font-medium mb-2">Party</label>
+        {{ form.party }}
+        {{ form.party.errors }}
+      </div>
+
+      <div>
+        <label class="block text-left text-gray-700 font-medium mb-2">Description</label>
+        {{ form.description }}
+        {{ form.description.errors }}
+      </div>
+
+      <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition duration-300">
+        💾 Update Candidate
+      </button>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -2,46 +2,54 @@
 
 {% block content %}
 
-<section class="py-20 bg-gradient-to-b from-gray-50 to-white min-h-screen flex items-center justify-center">
-  <div class="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-10 sm:p-14 transition-all duration-300">
-    
-    <h2 class="text-4xl font-extrabold mb-10 text-indigo-700 text-center tracking-tight font-sans">🗳️ Cast Your Vote</h2>
+<section class="py-24 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl p-12 sm:p-16 transition-all duration-500 animate-fade-in-up">
 
-    <form method="POST" action="{% url 'b_voteapp:cast_vote' %}" class="space-y-8">
+    <h2 class="text-5xl font-extrabold mb-12 text-purple-800 text-center tracking-tight font-sans animate-fade-in-down">
+      🗳️ Cast Your Vote
+    </h2>
+
+    <form method="POST" action="{% url 'b_voteapp:cast_vote' %}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
       {% csrf_token %}
 
       {% for candidate in candidates %}
-      <label class="flex items-center p-5 border border-gray-200 rounded-2xl cursor-pointer hover:shadow-lg transition duration-300 ease-in-out group">
-        <input
-          type="radio"
-          name="candidate_id"
-          value="{{ candidate.id }}"
-          class="form-radio text-indigo-600 scale-125 focus:ring-2 focus:ring-indigo-400 transition duration-200"
-          required
-        />
-        <div class="ml-6 flex items-center space-x-4">
-          <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}"
-               class="w-20 h-20 rounded-full object-cover shadow-sm group-hover:scale-105 transition duration-300" />
-          <div>
-            <h3 class="text-2xl font-semibold text-slate-800">{{ candidate.name }}</h3>
-            <p class="text-gray-600 text-sm mt-1 leading-snug">
-              {{ candidate.description }}
-            </p>
-          </div>
-        </div>
-      </label>
+      <div class="bg-white border border-gray-200 rounded-3xl p-6 shadow-lg text-center flex flex-col items-center hover:shadow-2xl transition-all duration-300 group animate-fade-in-up">
+
+        <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}"
+          class="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md mb-5 group-hover:scale-105 transition duration-300" />
+
+        <h3 class="text-2xl font-bold text-slate-800 mb-2 group-hover:text-purple-800">{{ candidate.name }}</h3>
+        <p class="text-purple-700 font-medium">{{ candidate.party }}</p>
+        <p class="text-gray-500 text-sm mt-1 mb-3">{{ candidate.role }}</p>
+
+        <p class="text-gray-600 text-base leading-snug mb-6 px-2">
+          {{ candidate.description }}
+        </p>
+
+        <input type="radio" name="candidate_id" value="{{ candidate.id }}"
+          class="form-radio text-purple-700 scale-125 focus:ring-2 focus:ring-purple-400 transition duration-200"
+          required />
+
+      </div>
       {% empty %}
-      <p class="text-center text-gray-500 text-lg">No candidates available at the moment.</p>
+      <p class="text-center text-gray-400 text-lg col-span-full animate-fade-in-up">No candidates available at the moment.</p>
       {% endfor %}
 
-      <button type="submit"
-        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-semibold py-4 rounded-2xl shadow-md transition duration-300 tracking-wide">
-        ✅ Submit Vote
-      </button>
+      <div class="col-span-full flex justify-center">
+        <button type="submit"
+          class="w-full bg-purple-700 hover:bg-purple-800 text-white text-xl font-semibold py-5 rounded-2xl shadow-lg transition duration-300 tracking-wide animate-bounce">
+          ✅ Submit Your Vote
+        </button>
+      </div>
+
+      <a href="{{ request.META.HTTP_REFERER|default:'#' }}"
+        class="text-md text-center text-gray-500 hover:text-purple-600 transition font-medium">Go Back
+      </a>
+
+
     </form>
 
   </div>
 </section>
-
 
 {% endblock %}

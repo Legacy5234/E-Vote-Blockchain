@@ -1,9 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-from a_userauthapp.models import Voter_User
 from . models import Candidate, Vote, Election, Voter, Block
-
 
 from django.utils import timezone
 from django.contrib import messages
@@ -40,6 +38,7 @@ def homepage(request):
 @login_required(login_url='a_userauthapp:login')
 def election_detail(request, pk):
     election = get_object_or_404(Election, pk=pk)
+    candidates = Candidate.objects.filter(election=election)
 
     # Determine election status
     if election.end_time < timezone.now():
@@ -52,6 +51,7 @@ def election_detail(request, pk):
     context = {
         'election': election,
         'status': status,
+        'candidates':candidates
     }
     return render(request, 'b_voteapp/election_detail.html', context)
 
@@ -121,7 +121,8 @@ def cast_vote(request):
             transaction_hash=new_block.hash
         )
 
-        return render(request, 'b_voteapp/success.html')
+        messages.success(request, 'Your Vote has successfully been cast and recorded in the blockchain')
+        return redirect('b_voteapp:home')
 
     else:
         candidates = Candidate.objects.all()
@@ -156,6 +157,7 @@ def blockchain_explorer(request):
                 'voter_id': vote_data['voter_id'],
                 'voter_username': voter.user.username if voter else "Unknown",
                 'candidate_name': candidate.name if candidate else "Unknown",
+                'candidate_role': candidate.role if candidate else "Unknown",
                 'candidate_party': candidate.party if candidate else "Unknown",
                 'election_name': election.name if election else "Unknown",
                 'timestamp': datetime.fromtimestamp(vote_data['timestamp'])  # convert to datetime object

@@ -1,0 +1,53 @@
+{% extends 'layouts/layout_b.html' %}
+
+{% block content %}
+  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl w-full space-y-8 p-8 bg-white rounded-3xl shadow-2xl border border-gray-200 backdrop-blur-lg bg-opacity-90 transition duration-500">
+      
+      <div class="text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900">🗳️ Create a New Election</h2>
+        <p class="mt-2 text-sm text-gray-600">Design your election event and manage its timeline</p>
+      </div>
+
+      <form method="POST" enctype="multipart/form-data" class="space-y-6 animate-fade-in-down">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div>
+          <label class="block text-left text-gray-700 font-medium mb-2">Name</label>
+          {{ form.name }}
+          {{ form.name.errors }}
+        </div>
+
+        <div>
+          <label class="block text-left text-gray-700 font-medium mb-2">Image</label>
+          {{ form.image }}
+          {{ form.image.errors }}
+        </div>
+
+        <div>
+          <label class="block text-left text-gray-700 font-medium mb-2">Start Time</label>
+          {{ form.start_time }}
+          {{ form.start_time.errors }}
+        </div>
+
+        <div>
+          <label class="block text-left text-gray-700 font-medium mb-2">End Time</label>
+          {{ form.end_time }}
+          {{ form.end_time.errors }}
+        </div>
+
+        <div class="flex items-center space-x-3">
+          {{ form.is_active }}
+          <label class="text-gray-700 font-medium">Active Now</label>
+        </div>
+
+        <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition duration-300">
+          🎉 Create Election
+        </button>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
+

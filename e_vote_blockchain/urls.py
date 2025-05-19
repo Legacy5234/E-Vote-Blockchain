@@ -28,5 +28,13 @@ urlpatterns = [
     path('', include('b_voteapp.urls')),
 
     path('home/adminpage/', views.admin_dashboard, name='admin-dashbaord'),
+    path('elections/create/', views.create_election, name='create_election'),
+    path('candidates/create/', views.create_candidate, name='create_candidate'),
+
+    path('elections/<int:pk>/edit/', views.edit_election, name='edit_election'),
+    path('election/<int:pk>/delete/', views.delete_election, name='delete_election'),
+
+    path('candidates/<int:pk>/edit/', views.edit_candidate, name='edit_candidate'),
+    path('candidates/<int:pk>/delete/', views.delete_candidate, name='delete_candidate'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,33 +1,28 @@
-{% extends 'layouts/profile_layout.html' %}
+{% extends 'layouts/layout_b.html' %}
 
 {% block content %}
-<section class="py-20 bg-gray-50 min-h-screen flex items-center">
-  <div class="w-full max-w-4xl mx-auto px-6 sm:px-12 md:px-16 lg:px-24 bg-white rounded-3xl shadow-lg text-center">
-    
+<section class="py-20 min-h-screen  flex items-center">
+  <div class="w-full max-w-6xl mx-auto px-6 sm:px-12 md:px-16 lg:px-24 bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl shadow-2xl text-center animate-fade-in-up">
+
     <!-- Election Name -->
-    <h1 class="text-4xl font-extrabold mb-6 text-slate-700 tracking-tight font1">{{ election.name }}</h1>
+    <h1 class="text-5xl font-extrabold mb-6 text-slate-800 tracking-tight font1 mt-10">{{ election.name }}</h1>
 
     <!-- Status Badge -->
     <div class="mb-8">
       <span class="inline-block px-5 py-2 text-sm font-semibold rounded-full
         {% if status == 'Ended' %}bg-red-100 text-red-600
         {% elif status == 'Active' %}bg-green-100 text-green-700
-        {% else %}bg-gray-200 text-gray-600{% endif %}">
+        {% else %}bg-gray-300 text-gray-700{% endif %}">
         {{ status }}
       </span>
     </div>
 
     <!-- Election Image -->
-    <img src="{{ election.image.url }}" alt="{{ election.name }}" 
-         class="w-full max-w-4xl h-96 object-cover rounded-xl mx-auto mb-8 shadow-md" />
-
-    <!-- Description -->
-    <p class="text-gray-700 text-lg leading-relaxed mb-10 px-4 sm:px-8 md:px-16 lg:px-24">
-      {{ election.description }}
-    </p>
+    <img src="{{ election.image.url }}" alt="{{ election.name }}"
+         class="w-full max-w-4xl h-96 object-cover rounded-xl mx-auto mb-8 shadow-lg border-4 border-white" />
 
     <!-- Dates -->
-    <div class="flex flex-col sm:flex-row justify-center sm:space-x-16 space-y-4 sm:space-y-0 mb-12 text-gray-600 text-sm font-medium">
+    <div class="flex flex-col sm:flex-row justify-center sm:space-x-20 space-y-4 sm:space-y-0 mb-10 text-gray-700 text-sm font-medium">
       <div>
         <span class="block text-indigo-600 font-semibold">🗓️ Starts</span>
         <span>{{ election.start_time|date:"F j, Y, g:i a" }}</span>
@@ -38,21 +33,83 @@
       </div>
     </div>
 
-    <!-- Vote Button (only show if active) -->
-    {% if status == 'Active' %}
-      <a href="{% url 'b_voteapp:cast_vote' %}" 
-         class="inline-block mb-6 bg-green-600 text-white px-10 py-3 rounded-xl hover:bg-green-700 transition font-semibold shadow-lg mr-2">
-        Vote Now
-      </a>
-    {% endif %}
+    <!-- Buttons -->
+    <div class="space-x-4 mb-12 flex flex-wrap justify-center">
 
-    <!-- Back Button -->
-    <a href="{% url 'b_voteapp:home' %}" 
-       class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 transition font-semibold shadow-lg mb-5">
-      ← Back to Elections
-    </a>
-  </div>
+      {% if status == 'Active' %}
+      <a href="{% url 'b_voteapp:cast_vote' %}"
+        class="mb-5 inline-block bg-green-600 text-white px-8 py-3 rounded-xl hover:bg-green-700 transition font-semibold shadow-lg">
+        🗳️ Vote Now
+      </a>
+      {% endif %}
+
+      {% if request.user.is_superuser %}
+      <a href="{% url 'edit_election' election.pk %}"
+        class="mb-5 inline-block bg-yellow-500 text-white px-8 py-3 rounded-xl hover:bg-yellow-600 transition font-semibold shadow-lg">
+        ✏️ Edit Election
+      </a>
+      {% endif %}
+
+      <a href="{% url 'b_voteapp:home' %}"
+        class="mb-5 inline-block bg-blue-600 text-white px-8 py-3 rounded-xl hover:bg-blue-700 transition font-semibold shadow-lg">
+        🏠 Home
+      </a>
+
+      {% if request.user.is_superuser %}
+      <a href="{% url 'delete_election' election.pk %}"
+        class="mb-5 inline-block bg-red-600 text-white px-8 py-3 rounded-xl hover:bg-red-700 transition font-semibold shadow-lg"
+        >
+        🗑️ Delete Election
+      </a>
+      {% endif %}
+
+    </div>
+
+
+    <!-- Candidates Section -->
+    <h12 class="text-4xl font-extrabold text-dark tracking-tight animate-fade-in-up">📋 Candidates</h12>
+
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 sm:px-10 md:px-20 animate-fade-in-down mb-16">
+      {% for candidate in candidates %}
+      <div class="relative bg-white rounded-3xl shadow-2xl p-6 space-y-5 border border-gray-200 hover:shadow-3xl transform hover:-translate-y-2 transition duration-300 overflow-hidden">
+
+        <!-- Image -->
+        <div class="overflow-hidden rounded-2xl">
+          <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}"
+              class="w-full h-60 object-cover rounded-2xl border border-gray-300 shadow-sm hover:scale-105 transition duration-300">
+        </div>
+
+        <!-- Name & Party -->
+        <div class="text-center">
+          <h3 class="text-2xl font-bold text-gray-800 mb-5">Name: {{ candidate.name }}</h3>
+          <p class="text-indigo-600 font-semibold text-sm uppercase">Position: {{ candidate.role }}</p>
+          <p class="text-indigo-800 font-semibold text-sm uppercase">Party: {{ candidate.party }}</p>
+        </div>
+
+        <!-- Action Buttons (Edit / Delete) -->
+        {% if request.user.is_superuser %}
+        <div class="flex justify-center space-x-4 pt-2">
+          <a href="{% url 'edit_candidate' candidate.pk %}"
+            class="bg-yellow-500 text-white px-5 py-2 rounded-xl hover:bg-yellow-600 transition font-semibold shadow-sm flex items-center space-x-1">
+            ✏️ <span>Edit</span>
+          </a>
+          <a href="{% url 'delete_candidate' candidate.pk %}"
+            class="bg-red-500 text-white px-5 py-2 rounded-xl hover:bg-red-600 transition font-semibold shadow-sm flex items-center space-x-1"
+            >
+            🗑️ <span>Delete</span>
+          </a>
+        </div>
+        {% endif %}
+
+      </div>
+      {% empty %}
+      <p class="text-gray-300 col-span-full text-center text-lg">No candidates available for this election.</p>
+      {% endfor %}
+    </div>
+
+    
+  </div> 
 </section>
 
-
 {% endblock %}
+

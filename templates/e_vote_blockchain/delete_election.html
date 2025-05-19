@@ -1,0 +1,23 @@
+{% extends 'layouts/layout_b.html' %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+  <div class="max-w-lg w-full bg-white p-8 rounded-3xl shadow-2xl backdrop-blur-lg bg-opacity-90 transition duration-500 space-y-6 text-center animate-fade-in-down">
+
+    <h2 class="text-3xl font-extrabold text-gray-900">❌ Delete Election</h2>
+    <p class="text-gray-700 text-lg">Are you sure you want to delete <strong>{{ election.name }}</strong>?</p>
+
+    <form method="POST" class="space-y-4">
+      {% csrf_token %}
+      <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition duration-300">
+        🚨 Yes, Delete
+      </button>
+      <a href="{{ request.META.HTTP_REFERER|default:'#' }}" class="inline-block w-full py-3 px-4 bg-gray-300 text-gray-800 font-semibold rounded-xl hover:bg-gray-400 transition duration-300">
+        Cancel
+      </a>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

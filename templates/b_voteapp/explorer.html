@@ -42,7 +42,7 @@
                 {% for vote in block.parsed_votes %}
                 <li class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
                 <p><span class="font-semibold">🆔 Voter:</span> {{ vote.voter_username }}</p>
-                <p><span class="font-semibold">🎯 Candidate:</span> {{ vote.candidate_name }} ({{ vote.candidate_party }})</p>
+                <p><span class="font-semibold">🎯 Candidate:</span> {{ vote.candidate_name }} ({{ vote.candidate_role }} - {{ vote.candidate_party }})</p>
                 <p><span class="font-semibold">🏷️ Election:</span> {{ vote.election_name }}</p>
                 <p class="text-xs text-gray-500">📅 {{ vote.timestamp|date:"M d, Y H:i" }}</p>
                 </li>
