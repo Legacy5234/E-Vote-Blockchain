@@ -6,6 +6,8 @@ from . models import Candidate, Vote, Election, Voter, Block
 from django.utils import timezone
 from django.contrib import messages
 from datetime import datetime
+from django.db.models import Count
+
 
 import time 
 import json
@@ -38,23 +40,44 @@ def homepage(request):
 @login_required(login_url='a_userauthapp:login')
 def election_detail(request, pk):
     election = get_object_or_404(Election, pk=pk)
-    candidates = Candidate.objects.filter(election=election)
+    candidates = Candidate.objects.filter(election=election).annotate(vote_count=Count('vote')).order_by('-vote_count', 'name')
 
-    # Determine election status
-    if election.end_time < timezone.now():
+    if election.end_time and election.end_time < timezone.now():
         status = 'Ended'
     elif election.is_active:
         status = 'Active'
     else:
         status = 'Inactive'
 
+    # Tie-aware ranking
+    ranking = {}
+    current_rank = 0
+    previous_votes = None
+    position_count = 0  # for actual 1st, 2nd, 3rd etc
+    for candidate in candidates:
+        position_count += 1
+        if candidate.vote_count != previous_votes:
+            current_rank = position_count
+        previous_votes = candidate.vote_count
+
+        if current_rank == 1:
+            rank_label = '🥇 1st Place'
+        elif current_rank == 2:
+            rank_label = '🥈 2nd Place'
+        elif current_rank == 3:
+            rank_label = '🥉 3rd Place'
+        else:
+            rank_label = f'{current_rank}th Place'
+
+        ranking[candidate.id] = rank_label
+
     context = {
         'election': election,
         'status': status,
-        'candidates':candidates
+        'candidates': candidates,
+        'ranking': ranking,
     }
     return render(request, 'b_voteapp/election_detail.html', context)
-
 
 
 #---------------------------------------------------------------------------------------------------------

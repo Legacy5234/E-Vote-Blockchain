@@ -1,4 +1,6 @@
 {% extends 'layouts/layout_b.html' %}
+{% load custom_filters %}
+
 
 {% block content %}
 <section class="py-20 min-h-screen  flex items-center">
@@ -67,35 +69,47 @@
 
 
     <!-- Candidates Section -->
-    <h12 class="text-4xl font-extrabold text-dark tracking-tight animate-fade-in-up">📋 Candidates</h12>
+    <h2 class="text-4xl font-extrabold text-gray-800 tracking-tight mb-12 text-center animate-fade-in-up">📋 Candidates</h2>
 
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 sm:px-10 md:px-20 animate-fade-in-down mb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 sm:px-10 md:px-20 animate-fade-in-down mb-16">
+
       {% for candidate in candidates %}
-      <div class="relative bg-white rounded-3xl shadow-2xl p-6 space-y-5 border border-gray-200 hover:shadow-3xl transform hover:-translate-y-2 transition duration-300 overflow-hidden">
+      <div class="relative bg-white rounded-3xl shadow-lg p-6 border border-gray-200 hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 overflow-hidden">
+
+        <!-- Ranking Badge -->
+        <span class="mb-10 absolute top-4 left-4 bg-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full shadow-sm z-10">
+          {{ ranking|get_item:candidate.id }}
+        </span>
 
         <!-- Image -->
         <div class="overflow-hidden rounded-2xl">
           <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}"
-              class="w-full h-60 object-cover rounded-2xl border border-gray-300 shadow-sm hover:scale-105 transition duration-300">
+            class="w-full h-56 object-cover rounded-2xl border border-gray-300 shadow hover:scale-105 transition duration-300">
         </div>
 
-        <!-- Name & Party -->
-        <div class="text-center">
-          <h3 class="text-2xl font-bold text-gray-800 mb-5">Name: {{ candidate.name }}</h3>
-          <p class="text-indigo-600 font-semibold text-sm uppercase">Position: {{ candidate.role }}</p>
-          <p class="text-indigo-800 font-semibold text-sm uppercase">Party: {{ candidate.party }}</p>
+        <!-- Details -->
+        <div class="text-center mt-6 space-y-2">
+          <h3 class="text-2xl font-bold text-gray-800">{{ candidate.name }}</h3>
+          <p class="text-indigo-500 font-semibold text-sm uppercase tracking-wide">Position: {{ candidate.role }}</p>
+          <p class="text-indigo-700 font-semibold text-sm uppercase tracking-wide">Party: {{ candidate.party }}</p>
+
+          <!-- Vote Count -->
+          <div class="flex justify-center items-center mt-4 space-x-2">
+            <span class="inline-flex items-center bg-green-500 text-white text-xs font-bold py-1 px-3 rounded-full shadow">
+              🗳️ {{ candidate.vote_count }} Vote{{ candidate.vote_count|pluralize }}
+            </span>
+          </div>
         </div>
 
-        <!-- Action Buttons (Edit / Delete) -->
+        <!-- Action Buttons -->
         {% if request.user.is_superuser %}
-        <div class="flex justify-center space-x-4 pt-2">
+        <div class="flex justify-center space-x-4 pt-6 mt-4 border-t border-gray-100">
           <a href="{% url 'edit_candidate' candidate.pk %}"
-            class="bg-yellow-500 text-white px-5 py-2 rounded-xl hover:bg-yellow-600 transition font-semibold shadow-sm flex items-center space-x-1">
+            class="bg-yellow-500 text-white px-5 py-2 rounded-xl hover:bg-yellow-600 transition font-semibold shadow flex items-center space-x-1">
             ✏️ <span>Edit</span>
           </a>
           <a href="{% url 'delete_candidate' candidate.pk %}"
-            class="bg-red-500 text-white px-5 py-2 rounded-xl hover:bg-red-600 transition font-semibold shadow-sm flex items-center space-x-1"
-            >
+            class="bg-red-500 text-white px-5 py-2 rounded-xl hover:bg-red-600 transition font-semibold shadow flex items-center space-x-1">
             🗑️ <span>Delete</span>
           </a>
         </div>
@@ -103,11 +117,11 @@
 
       </div>
       {% empty %}
-      <p class="text-gray-300 col-span-full text-center text-lg">No candidates available for this election.</p>
+      <p class="text-gray-400 col-span-full text-center text-lg">No candidates available for this election.</p>
       {% endfor %}
+
     </div>
 
-    
   </div> 
 </section>
 

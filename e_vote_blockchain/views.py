@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from . forms import ElectionForm, CandidateForm
+
 from b_voteapp.models import Election, Candidate
 
 
