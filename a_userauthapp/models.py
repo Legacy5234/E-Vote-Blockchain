@@ -6,82 +6,117 @@ from django.templatetags.static import static
 #---------------------------------------------------------------------------------------------------------
 # ACCOUNT CREATION
 #---------------------------------------------------------------------------------------------------------
+class College(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class Department(models.Model):
+    name = models.CharField(max_length=200)
+    college = models.ForeignKey(College, on_delete=models.CASCADE, related_name='departments')
+
+    def __str__(self):
+        return f"{self.name} ({self.college.name})"
+
+
+#---------------------------------------------------------------------------------------------------------
+# CUSTOM USER CREATION MODEL
+#---------------------------------------------------------------------------------------------------------
 class StaffAccountManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, first_name, last_name, password=None, **extra_fields):
         if not username:
-            raise ValueError('Username of staff not found')
+            raise ValueError('Username is required')
+        if not first_name:
+            raise ValueError('First name is required')
+        if not last_name:
+            raise ValueError('Last name is required')
         if not email:
-            raise ValueError('Staff email is missing')
+            raise ValueError('Email is required')
+
+        email = self.normalize_email(email)
+
         user = self.model(
             username=username,
-            email=self.normalize_email(email)
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            **extra_fields
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    # ADMIN USER ACCOUNT CREATION
-    def create_superuser(self, username, email, password):
-        user = self.create_user(
+    def create_superuser(self, username, email, first_name, last_name, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+
+        return self.create_user(
             username=username,
-            email=self.normalize_email(email),
-            password=password
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            **extra_fields
         )
-
-        user.is_superuser = True
-        user.is_active = True
-        user.is_staff = True
-
-        user.save(using=self._db)
-        return user
-
-
 
 
 #---------------------------------------------------------------------------------------------------------
 # CUSTOM USER MODEL
 #---------------------------------------------------------------------------------------------------------
 class Voter_User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=25, unique=True, blank=False)
+    username = models.CharField(max_length=25, unique=True)
     email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
 
-    # FLAGS
     is_superuser = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-
     is_active = models.BooleanField(default=False)
 
-    # SIGN-UP METHOD
+    college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
+
+    date_of_birth = models.DateField(null=True, blank=True)
+    
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female')
+    )
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
+
+    location = models.CharField(max_length=100, null=True, blank=True)
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     objects = StaffAccountManager()
 
     def __str__(self):
-        return f'{self.username} : {self.email}'
+        return f'{self.username} ({self.email})'
+
+
+
     
 
 #---------------------------------------------------------------------------------------------------------
 # PROFILE MODEL
 #---------------------------------------------------------------------------------------------------------
-GENDER = (
-    ('Male','Male'),('Female','Female'),
-)
-
 class Profile(models.Model):
     user = models.OneToOneField(Voter_User, on_delete=models.CASCADE, related_name='profile')
 
     image = models.ImageField(upload_to='VoteChain-profileimages/', null=True, blank=True)
-    
-    first_name = models.CharField(max_length=30)
-    middle_name = models.CharField(max_length=30, blank=True)
-    surname = models.CharField(max_length=30)
-    gender = models.CharField(max_length=20, choices=GENDER)
 
-    location = models.CharField(max_length=20, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True)
-
 
     @property
     def profile_image(self):
@@ -89,12 +124,5 @@ class Profile(models.Model):
             return self.image.url
         return static('images/avatar_default.svg')
     
-
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.surname} {self.middle_name}"
-
-    
-
     def __str__(self):
         return f'{self.user.username}'

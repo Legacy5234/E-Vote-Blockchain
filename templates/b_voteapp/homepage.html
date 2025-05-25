@@ -1,52 +1,67 @@
 {% extends 'layouts/profile_layout.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block content %}
 
 <!-- Current Elections Section -->
-<section class="py-16 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-8">
+<section class="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+  <div class="max-w-[90rem] mx-auto px-6 md:px-10">
+
     
-    <!-- Section Heading -->
-    <h2 class="text-5xl font-extrabold mb-12 font1 text-slate-800 tracking-tight text-center drop-shadow-sm">
-      <span class="block">🗳️ Current Elections</span>
-      <span class="block w-24 h-1 bg-indigo-600 mx-auto mt-4 rounded-full"></span>
-    </h2>
+        <!-- Section Heading -->
+        <h2 class="text-5xl font-extrabold mb-14 font1 text-slate-800 tracking-tight text-center drop-shadow-md">
+        🗳️ Current Elections
+        <div class="w-28 h-1 bg-indigo-600 mx-auto mt-5 rounded-full"></div>
+        </h2>
 
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {% for election in elections %}
-            <div class="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition flex flex-col text-center">
-                
-                <!-- Election Image -->
-                <img src="{{ election.image.url }}" alt="{{ election.name }}" class="w-full h-52 object-cover rounded-xl mb-4">
+        <div class="bg-white shadow-xl rounded-3xl p-6 flex flex-col items-center text-center transition transform hover:scale-[1.02] hover:shadow-2xl duration-300">
 
-                <!-- Election Status Badge -->
-                {% if election.status == 'Ended' %}
-                    <span class="inline-block mb-3 px-3 py-1 text-sm font-semibold text-red-600 bg-red-100 rounded-full">Election Ended</span>
-                {% elif election.status == 'Active' %}
-                    <span class="inline-block mb-3 px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 rounded-full">Active</span>
-                {% else %}
-                    <span class="inline-block mb-3 px-3 py-1 text-sm font-semibold text-gray-600 bg-gray-200 rounded-full">Inactive</span>
-                {% endif %}
+            <!-- Election Image -->
+            <img src="{{ election.image.url }}" alt="{{ election.name }}" class="w-full h-52 object-cover rounded-2xl mb-5 shadow-sm">
 
+            <!-- Status Badge -->
+            {% if election.status == 'Ended' %}
+            <span class="mb-3 px-3 py-1 text-sm font-semibold text-red-600 bg-red-100 rounded-full">Election Ended</span>
+            {% elif election.status == 'Active' %}
+            <span class="mb-3 px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 rounded-full">Active</span>
+            {% else %}
+            <span class="mb-3 px-3 py-1 text-sm font-semibold text-gray-600 bg-gray-200 rounded-full">Inactive</span>
+            {% endif %}
 
-                <h3 class="text-2xl font-bold mb-2 text-indigo-600">{{ election.name }}</h3>
-                <p class="text-gray-600 mb-4">{{ election.description|truncatewords:20 }}</p>
-                
-                <p class="text-sm text-gray-500 mb-1">🗓️ Starts: {{ election.start_time|date:"F j, Y, g:i a" }}</p>
-                <p class="text-sm text-gray-500 mb-4">🛑 Ends: {{ election.end_time|date:"F j, Y, g:i a" }}</p>
-                
-                <a href="{% url 'b_voteapp:election_detail' election.pk %}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 transition">
-                View Details
-                </a>
+            <!-- Election Details -->
+            <h3 class="text-2xl font-bold text-indigo-700 mb-2">{{ election.election_name }}</h3>
+            <p class="text-indigo-500 font-medium mb-2">{{ election.election_type }}</p>
+
+            <!-- Description -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm mb-6">
+                <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                    <i class="fas fa-align-left mr-2 text-indigo-600"></i> Description
+                </h3>
+                <p class="text-slate-700 text-base leading-relaxed">
+                    {{ election.election_description }}
+                </p>
             </div>
+
+            <!-- Timings -->
+            <div class="text-sm text-gray-500 space-y-1 mb-4">
+            <p>🗓️ <strong>Starts:</strong> {{ election.start_time|date:"F j, Y, g:i a" }}</p>
+            <p>🛑 <strong>Ends:</strong> {{ election.end_time|date:"F j, Y, g:i a" }}</p>
+            </div>
+
+            <!-- View Button -->
+            <a href="{% url 'b_voteapp:election_detail' election.pk %}" 
+            class="inline-block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-5 py-2.5 rounded-xl font-semibold shadow-md hover:scale-105 hover:shadow-lg transition duration-300">
+            📄 View Details
+            </a>
+        </div>
         {% empty %}
-            <p class="text-center col-span-full text-gray-500">No active elections at the moment.</p>
+        <p class="text-center col-span-full text-gray-500 text-lg">No active elections at the moment.</p>
         {% endfor %}
+        </div>
+
     </div>
-
-  </div>
 </section>
-
 {% endblock %}

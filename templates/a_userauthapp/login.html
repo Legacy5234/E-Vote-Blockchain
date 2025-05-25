@@ -3,9 +3,9 @@
 {% load widget_tweaks %}
 
 {% block content %}
-    <section class="flex items-center justify-center bg-slate-200 text-white px-4 py-15">
+    <section class="flex items-center justify-center bg-slate-200 text-white px-4 py-15 mt-10">
         <div class="w-full max-w-3xl bg-gray-800 p-10 rounded-2xl shadow-2xl">
-            <h2 class="text-4xl font-extrabold text-center mb-8">Welcome Back</h2>
+            <h2 class="text-4xl font-extrabold text-center mb-8 font1">VoteChain - Welcome Back</h2>
 
             <form method="POST" class="space-y-7">
             {% csrf_token %}
@@ -46,10 +46,10 @@
             </form>
 
             <!-- Register Link -->
-            <p class="text-center text-gray-400 mt-6 text-sm">
+            <!-- <p class="text-center text-gray-400 mt-6 text-sm">
             Don’t have an account?
             <a href="{% url 'a_userauthapp:account-create' %}" class="text-indigo-400 hover:underline">Register now</a>
-            </p>
+            </p> -->
         </div>
     </section>
 

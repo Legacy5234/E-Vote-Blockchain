@@ -1,19 +1,27 @@
 from django.db import models
-from a_userauthapp.models import Voter_User
+from a_userauthapp.models import Voter_User, College
 
 import hashlib
 import json
 import time
 
+ELECTION_TYPE = (
+    ('Staff Election','Staff Election'),
+    ('Student Election','Student Election')
+)
+
 class Election(models.Model):
-    name = models.CharField(max_length=100)
+    college = models.ForeignKey(College, on_delete=models.CASCADE, null=True)
+    election_name = models.CharField(max_length=100)
+    election_type = models.CharField(max_length=50, choices=ELECTION_TYPE, null=True)
+    election_description = models.TextField(max_length=250, null=True)
     image = models.ImageField(upload_to='VoteChain-electionimage/', null=True)
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.election_name
 
 
 class Voter(models.Model):

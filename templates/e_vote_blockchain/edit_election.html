@@ -1,53 +1,109 @@
 {% extends 'layouts/layout_b.html' %}
+{% load widget_tweaks %}
+
 
 {% block content %}
-<div class="py-20 min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-3xl w-full space-y-8 p-8 bg-white rounded-3xl shadow-2xl border border-gray-200 backdrop-blur-lg bg-opacity-90 transition duration-500">
+<div class="py-16 bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] flex items-center justify-center">
+  <div class="max-w-3xl w-full space-y-10 p-10 bg-white rounded-3xl shadow-2xl border border-gray-200 backdrop-blur-lg bg-opacity-90 transition duration-500">
 
+    <!-- Heading -->
     <div class="text-center">
-      <h2 class="text-3xl font-extrabold text-gray-900">✏️ Edit Election</h2>
-      <p class="mt-2 text-sm text-gray-600">Modify the details for: <strong>{{ election.name }}</strong></p>
+      <h2 class="text-4xl font-extrabold text-gray-900">✏️ Edit Election</h2>
+      <p class="mt-3 text-sm text-gray-600">Modify details for: <strong class="text-indigo-600">{{ election.election_name }}</strong></p>
     </div>
 
+    <!-- Form -->
     <form method="POST" enctype="multipart/form-data" class="space-y-6 animate-fade-in-down">
       {% csrf_token %}
       {{ form.non_field_errors }}
+      {{ form.errors }}
 
-      <div>
-        <label class="block text-left text-gray-700 font-medium mb-2">Name</label>
-        {{ form.name }}
-        {{ form.name.errors }}
-      </div>
+      <!-- Election Image -->
+      <div class="text-center">
+        {% if election.image %}
+          <div class="mb-4">
+            <img src="{{ election.image.url }}" alt="Election Image" class="mx-auto h-48 w-auto rounded-xl shadow-lg border border-gray-300 object-cover" />
+          </div>
+        {% endif %}
 
-      <div>
-        <label class="block text-left text-gray-700 font-medium mb-2">Image</label>
+        <label class="block text-sm font-semibold text-gray-800 mb-5">
+          <i class="fas fa-image mr-2 text-indigo-500"></i>Election Image
+        </label>
         {{ form.image }}
         {{ form.image.errors }}
       </div>
 
+      <!-- Election Name -->
       <div>
-        <label class="block text-left text-gray-700 font-medium mb-2">Start Time</label>
+        <label class="block text-sm font-semibold text-gray-800 mb-5">
+          <i class="fas fa-heading mr-2 text-indigo-500"></i>Election Name
+        </label>
+        {{ form.election_name }}
+        {{ form.election_name.errors }}
+      </div>
+
+      <!-- Election Type -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-800 mb-5">
+          <i class="fas fa-list mr-2 text-indigo-500"></i>Election Type
+        </label>
+        {{ form.election_type }}
+        {{ form.election_type.errors }}
+      </div>
+
+      <!-- College -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-800 mb-5">
+          <i class="fas fa-university mr-2 text-indigo-500"></i>College
+        </label>
+        {{ form.college }}
+        {{ form.college.errors }}
+      </div>
+
+      <!-- Start Time -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-800 mb-5">
+          <i class="fas fa-hourglass-start mr-2 text-indigo-500"></i>Start Time
+        </label>
         {{ form.start_time }}
         {{ form.start_time.errors }}
       </div>
 
+      <!-- End Time -->
       <div>
-        <label class="block text-left text-gray-700 font-medium mb-2">End Time</label>
+        <label class="block text-sm font-semibold text-gray-800 mb-5">
+          <i class="fas fa-hourglass-end mr-2 text-indigo-500"></i>End Time
+        </label>
         {{ form.end_time }}
         {{ form.end_time.errors }}
       </div>
 
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-800 mb-5">
+          <i class="fas fa-align-left mr-2 text-indigo-500"></i>Description
+        </label>
+        {{ form.election_description|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" }}
+        {{ form.election_description.errors }}
+      </div>
+
+      <!-- Is Active -->
       <div class="flex items-center space-x-3">
         {{ form.is_active }}
         <label class="text-gray-700 font-medium">Active Now</label>
       </div>
 
-      <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition duration-300">
-        💾 Update Election
-      </button>
+      <!-- Submit Button -->
+      <div class="flex justify-center pt-4">
+        <button type="submit" class="w-full md:w-auto py-3 px-6 bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition duration-300">
+          💾 Update Election
+        </button>
+      </div>
+
     </form>
 
   </div>
 </div>
+
 
 {% endblock %}

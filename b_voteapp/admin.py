@@ -9,8 +9,8 @@ class VoterAdmin(admin.ModelAdmin):
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
-    list_display = ('name', 'party')
-    search_fields = ('name', 'party')
+    list_display = ('party',)
+    search_fields = ('party',)
 
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
@@ -19,7 +19,7 @@ class VoteAdmin(admin.ModelAdmin):
 
 @admin.register(Election)
 class ElectionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_time', 'end_time', 'is_active')
+    list_display = ('election_name', 'start_time', 'end_time', 'is_active')
     actions = ['start_election', 'stop_election']
 
     def start_election(self, request, queryset):

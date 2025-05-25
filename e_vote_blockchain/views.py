@@ -24,7 +24,7 @@ def create_election(request):
         form = ElectionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('admin-dashboard')
+            return redirect('b_voteapp:home')
     else:
         form = ElectionForm()
     return render(request, 'e_vote_blockchain/create_election.html', {'form': form})
@@ -70,6 +70,7 @@ def edit_election(request, pk):
 #---------------------------------------------------------------------------------------------------------
 # DELETE ELECTION VIEW
 #---------------------------------------------------------------------------------------------------------
+@login_required(login_url='a_userauthapp:login')
 def delete_election(request, pk):
     election = get_object_or_404(Election, pk=pk)
     if request.method == 'POST':
@@ -83,6 +84,7 @@ def delete_election(request, pk):
 #---------------------------------------------------------------------------------------------------------
 # EDIT CANDIDATE VIEW VIEW
 #---------------------------------------------------------------------------------------------------------
+@login_required(login_url='a_userauthapp:login')
 def edit_candidate(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
     if request.method == 'POST':
@@ -90,7 +92,7 @@ def edit_candidate(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Candidate Edited Successfully..')
-            return redirect('admin-dashboard')
+            return redirect('b_voteapp:home')
     else:
         form = CandidateForm(instance=candidate)
     return render(request, 'e_vote_blockchain/edit_candidate.html', {'form': form, 'candidate': candidate})
@@ -99,6 +101,7 @@ def edit_candidate(request, pk):
 #---------------------------------------------------------------------------------------------------------
 # DELETE CANDIDATE VIEW
 #---------------------------------------------------------------------------------------------------------
+@login_required(login_url='a_userauthapp:login')
 def delete_candidate(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
     if request.method == 'POST':

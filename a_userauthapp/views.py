@@ -3,8 +3,10 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
-from . forms import SignUpForm, ProfileForm
-from . models import Voter_User
+from . forms import VoterSignupForm, ProfileForm
+from . models import Voter_User, Department
+
+from django.http import JsonResponse
 
 from django.db import transaction
 import uuid 
@@ -13,30 +15,41 @@ import uuid
 #---------------------------------------------------------------------------------------------------------
 # ACCOUNT CREATE VIEW
 #---------------------------------------------------------------------------------------------------------
+@login_required(login_url='a_userauthapp:login')
+def load_departments(request):
+    college_id = request.GET.get('college')
+    departments = Department.objects.filter(college_id=college_id).values('id', 'name')
+    return JsonResponse(list(departments), safe=False)
+
+@login_required(login_url='a_userauthapp:login')
 def create_account(request):
     if request.method == 'POST':
-        signup_form = SignUpForm(request.POST)
+        signup_form = VoterSignupForm(request.POST)
 
         if signup_form.is_valid():
-
-            #Creating User but not saving to database
             user = signup_form.save(commit=False)
             password = signup_form.cleaned_data.get('password')
+            role = signup_form.cleaned_data.get('role')
 
-            #Hashing Password
             user.set_password(password)
             user.is_active = True
+
+            if role == 'student':
+                user.is_student = True
+            elif role == 'staff':
+                user.is_staff = True
+
             user.save()
 
             messages.success(request, 'Account Created Successfully..')
             return redirect('a_userauthapp:login')
         else:
-            messages.error(request, 'There was an error in creating staff account..')
+            messages.error(request, 'There was an error in creating account..')
     else:
-        signup_form = SignUpForm()
+        signup_form = VoterSignupForm()
 
     context = {
-        'signup_form':signup_form,
+        'signup_form': signup_form,
     }
     return render(request, 'a_userauthapp/create_account.html', context)
 
@@ -92,14 +105,15 @@ def profile_view(request, username=None):
 #---------------------------------------------------------------------------------------------------------
 # PROFILE EDIT
 #---------------------------------------------------------------------------------------------------------
+@login_required(login_url='a_userauthapp:login')
 def profile_edit(request):
-    form = ProfileForm(instance=request.user.profile)
+    profile = request.user.profile
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
-            form.save()
+            form.save(user=request.user)
+            messages.success(request, 'Profile updated successfully.')
             return redirect('a_userauthapp:profile')
-    context = {
-        'form':form,
-    }
-    return render(request, 'a_userauthapp/profile-edit.html', context)
+    else:
+        form = ProfileForm(instance=profile, user=request.user)
+    return render(request, 'a_userauthapp/profile-edit.html', {'form': form, 'profile': profile})

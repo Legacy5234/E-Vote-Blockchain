@@ -1,64 +1,116 @@
 {% extends 'layouts/layout_b.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block content %}
 
-    <section class="max-w-7xl mx-auto p-10 bg-white shadow-2xl rounded-3xl mt-12">
+    <section class="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg card p-8">
+    <h1 class="text-4xl font-extrabold mb-12 text-center text-gray-900 font-sans">Edit Profile</h1>
 
-    <h1 class="text-4xl font-bold mb-10 text-center font1">Edit Profile</h1>
-
-    <div class="text-center flex flex-col items-center mb-10">
+    <!-- Profile Image Display -->
+    <div class="flex flex-col items-center mb-12 space-y-5">
         {% if profile.image %}
         <img src="{{ profile.image.url }}" id="profileimage" alt="Profile Image"
-        class="w-44 h-44 rounded-full border-4 border-indigo-300 shadow-lg object-cover">
+            class="w-44 h-44 rounded-full border-4 border-indigo-400 shadow-xl object-cover transition-shadow duration-300 hover:shadow-2xl" />
         {% else %}
         <img src="{% static 'images/avatar_default.svg' %}" id="profileimage" alt="Profile Image"
-        class="w-44 h-44 rounded-full border-4 border-indigo-300 shadow-lg object-cover">
+            class="w-44 h-44 rounded-full border-4 border-indigo-400 shadow-xl object-cover transition-shadow duration-300 hover:shadow-2xl" />
         {% endif %}
 
-        <div class="text-center mt-5">
-        <h2 id="fullname" class="text-2xl font-semibold">{{ profile.full_name }}</h2>
-        <div class="text-gray-500 text-sm">@{{ user.username }}</div>
+        <div class="text-center">
+        <h2 id="fullname" class="text-2xl font-semibold text-gray-800 tracking-wide">{{ profile.full_name }}</h2>
+        <p class="text-indigo-600 font-medium text-sm mt-1">@{{ user.username }}</p>
         </div>
     </div>
 
-    <form method="POST" enctype="multipart/form-data" class="space-y-8 max-w-4xl mx-auto">
+    <form method="POST" enctype="multipart/form-data" class="space-y-10">
         {% csrf_token %}
 
-        <!-- 2-column responsive grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {% for field in form %}
+        <!-- Personal Info -->
         <div>
-            <label for="{{ field.id_for_label }}" class="block text-gray-700 font-medium mb-2">
-            {{ field.label }}
-            </label>
-            {{ field }}
-            {% if field.help_text %}
-            <p class="text-sm text-gray-500 mt-1">{{ field.help_text }}</p>
-            {% endif %}
-            {% for error in field.errors %}
-            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
-            {% endfor %}
+        <h3 class="text-xl font-semibold text-gray-800 mb-6 border-b pb-2 text-center font1">Personal Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+            <label for="{{ form.first_name.id_for_label }}" class="block text-gray-700 font-semibold mb-2">First Name</label>
+            {{ form.first_name|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+            <div>
+            <label for="{{ form.last_name.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Last Name</label>
+            {{ form.last_name|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+            <div>
+            <label for="{{ form.date_of_birth.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Date of Birth</label>
+            {{ form.date_of_birth|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+            <div>
+            <label for="{{ form.gender.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Gender</label>
+            {{ form.gender|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+            <div>
+            <label for="{{ form.image.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Profile Image</label>
+            {{ form.image|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
         </div>
-        {% endfor %}
         </div>
 
-        <!-- Submit + Cancel buttons -->
-        <div class="flex flex-wrap gap-4 justify-between">
+        <!-- Academic Info -->
+        <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-6 border-b pb-2 text-center font1">Academic Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+            <label for="{{ form.college.id_for_label }}" class="block text-gray-700 font-semibold mb-2">College</label>
+            {{ form.college|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+            <div>
+            <label for="{{ form.department.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Department</label>
+            {{ form.department|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+        </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-6 border-b pb-2 text-center font1">Contact Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+            <label for="{{ form.location.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Location</label>
+            {{ form.location|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+            <div>
+            <label for="{{ form.email.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Institution Email</label>
+            {{ form.email|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+            </div>
+        </div>
+        </div>
+
+        <!-- About -->
+        <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-6 border-b pb-2 text-center font1">About</h3>
+        <div>
+            <label for="{{ form.bio.id_for_label }}" class="block text-gray-700 font-semibold mb-2">Bio</label>
+            {{ form.bio|add_class:"w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition" }}
+        </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-wrap gap-6 justify-center mt-6">
         <button type="submit"
-            class="flex-1 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-lg">Save
-            Changes</button>
+            class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-semibold shadow-md hover:bg-indigo-700 transition transform hover:scale-105">
+            Save Changes
+        </button>
         <a href="{{ request.META.HTTP_REFERER|default:'#' }}"
-            class="flex-1 px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-lg text-center">Cancel</a>
+            class="px-8 py-3 bg-gray-300 text-gray-700 rounded-lg font-semibold shadow-md hover:bg-gray-400 transition text-center">
+            Cancel
+        </a>
         </div>
 
     </form>
 
-    <div class="text-center mt-12">
-        <a href="#" class="text-red-500 hover:underline">Delete Profile</a>
+    <div class="text-center mt-14">
+        <a href="#" class="text-red-600 font-semibold hover:underline">Delete Profile</a>
     </div>
-
     </section>
+
 
     <script>
     // Update profile image preview

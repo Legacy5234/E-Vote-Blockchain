@@ -4,11 +4,18 @@ from b_voteapp.models import Election, Candidate
 class ElectionForm(forms.ModelForm):
     class Meta:
         model = Election
-        fields = ['name', 'image', 'start_time', 'end_time', 'is_active']
+        fields = ['election_name', 'election_type','college', 'image', 'start_time', 'end_time', 'election_description', 'is_active']
         widgets = {
-            'name': forms.TextInput(attrs={
+            'election_name': forms.TextInput(attrs={
                 'class': 'w-full p-2 border rounded-lg',
                 'placeholder': 'Election name'
+            }),
+            'election_type': forms.Select(attrs={
+                'class': 'w-full p-2 border rounded-lg',
+                'placeholder': 'Election type'
+            }),
+            'college': forms.Select(attrs={
+                'class': 'w-full p-2 border rounded-lg'
             }),
             'image': forms.ClearableFileInput(attrs={
                 'class': 'w-full p-2 border rounded-lg'
@@ -20,6 +27,11 @@ class ElectionForm(forms.ModelForm):
             'end_time': forms.DateTimeInput(attrs={
                 'type': 'datetime-local',
                 'class': 'w-full p-2 border rounded-lg'
+            }),
+            'election_description': forms.Textarea(attrs={
+                'class': 'w-full p-2 border rounded-lg',
+                'rows': 4,
+                'placeholder': 'Describe the election...'
             }),
             'is_active': forms.CheckboxInput(attrs={
                 'class': 'h-5 w-5'

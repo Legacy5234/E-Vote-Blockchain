@@ -1,53 +1,107 @@
 {% extends 'layouts/layout_b.html' %}
+{% load widget_tweaks %}
+
 
 {% block content %}
-  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl w-full space-y-8 p-8 bg-white rounded-3xl shadow-2xl border border-gray-200 backdrop-blur-lg bg-opacity-90 transition duration-500">
-      
-      <div class="text-center">
-        <h2 class="text-3xl font-extrabold text-gray-900">🗳️ Create a New Election</h2>
-        <p class="mt-2 text-sm text-gray-600">Design your election event and manage its timeline</p>
+<div class="bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 flex items-center justify-center mb-10">
+  <div class="max-w-3xl w-full space-y-10 p-8 bg-white rounded-3xl shadow-2xl border border-gray-200 backdrop-blur-lg bg-opacity-95 transition duration-500">
+
+    <!-- Heading -->
+    <div class="text-center animate-fadeInUp">
+      <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow">
+        🗳️ Create a New Election
+      </h2>
+      <p class="mt-3 text-base text-gray-600">Design your election event and manage its timeline</p>
+      <div class="mt-4 w-20 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="space-y-6 animate-fadeInDown">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {{ form.errors }}
+
+      <!-- Name -->
+      <div>
+        <label class="block text-sm font-medium text-gray-800 mb-2">
+          <i class="fas fa-signature mr-2 text-indigo-500"></i>Election Name
+        </label>
+        {{ form.election_name|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" }}
+        {{ form.election_name.errors }}
       </div>
 
-      <form method="POST" enctype="multipart/form-data" class="space-y-6 animate-fade-in-down">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+      <!-- Election Type -->
+      <div>
+        <label class="block text-sm font-medium text-gray-800 mb-2">
+          <i class="fas fa-vote-yea mr-2 text-indigo-500"></i>Election Type
+        </label>
+        {{ form.election_type|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" }}
+        {{ form.election_type.errors }}
+      </div>
 
-        <div>
-          <label class="block text-left text-gray-700 font-medium mb-2">Name</label>
-          {{ form.name }}
-          {{ form.name.errors }}
-        </div>
+      <!-- College -->
+      <div>
+        <label class="block text-sm font-medium text-gray-800 mb-2">
+          <i class="fas fa-university mr-2 text-indigo-500"></i>College
+        </label>
+        {{ form.college|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" }}
+        {{ form.college.errors }}
+      </div>
 
-        <div>
-          <label class="block text-left text-gray-700 font-medium mb-2">Image</label>
-          {{ form.image }}
-          {{ form.image.errors }}
-        </div>
+      <!-- Image -->
+      <div>
+        <label class="block text-sm font-medium text-gray-800 mb-2">
+          <i class="fas fa-image mr-2 text-indigo-500"></i>Election Image
+        </label>
+        {{ form.image|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white" }}
+        {{ form.image.errors }}
+      </div>
 
-        <div>
-          <label class="block text-left text-gray-700 font-medium mb-2">Start Time</label>
-          {{ form.start_time }}
-          {{ form.start_time.errors }}
-        </div>
+      <!-- Start Time -->
+      <div>
+        <label class="block text-sm font-medium text-gray-800 mb-2">
+          <i class="fas fa-hourglass-start mr-2 text-indigo-500"></i>Start Time
+        </label>
+        {{ form.start_time|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" }}
+        {{ form.start_time.errors }}
+      </div>
 
-        <div>
-          <label class="block text-left text-gray-700 font-medium mb-2">End Time</label>
-          {{ form.end_time }}
-          {{ form.end_time.errors }}
-        </div>
+      <!-- End Time -->
+      <div>
+        <label class="block text-sm font-medium text-gray-800 mb-2">
+          <i class="fas fa-hourglass-end mr-2 text-indigo-500"></i>End Time
+        </label>
+        {{ form.end_time|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" }}
+        {{ form.end_time.errors }}
+      </div>
 
-        <div class="flex items-center space-x-3">
-          {{ form.is_active }}
-          <label class="text-gray-700 font-medium">Active Now</label>
-        </div>
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-800 mb-2">
+          <i class="fas fa-align-left mr-2 text-indigo-500"></i>Description
+        </label>
+        {{ form.election_description|add_class:"w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" }}
+        {{ form.election_description.errors }}
+      </div>
 
-        <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition duration-300">
+
+      <!-- Active Now -->
+      <div class="flex items-center space-x-3">
+        {{ form.is_active }}
+        <label class="text-gray-700 font-medium">Active Now</label>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-center">
+        <button type="submit" class="w-full md:w-1/2 py-3 px-6 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition duration-300">
           🎉 Create Election
         </button>
-      </form>
+      </div>
 
-    </div>
+    </form>
+
   </div>
+</div>
+
 {% endblock %}
 

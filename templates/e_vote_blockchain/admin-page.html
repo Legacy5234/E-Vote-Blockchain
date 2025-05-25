@@ -19,19 +19,37 @@
         
             <!-- Button Container -->
             <div class="flex flex-wrap justify-center gap-4 mt-6">
-                <!-- Create Appointment -->
+
+                <!-- Register Voter Button -->
                 <div class="relative">
-                    <a href="{% url 'create_election' %}"
-                    class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm md:text-base px-5 py-2.5 rounded-xl shadow transition duration-200">
-                        <i class="fas fa-calendar-plus"></i> Create Election
+                    <a href="{% url 'a_userauthapp:account-create' %}"
+                    class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm md:text-base px-5 py-2.5 rounded-xl shadow transition duration-200">
+                    <i class="fas fa-user-plus"></i> Register Voter
                     </a>
                 </div>
 
-                <a href="{% url 'create_candidate' %}" class="flex items-center gap-2 h-12 px-5 bg-yellow-600 hover:bg-yellow-700 text-white text-base font-semibold rounded-xl shadow transition duration-200">
+                <!-- Create Election Button -->
+                <div class="relative">
+                    <a href="{% url 'create_election' %}"
+                    class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium text-sm md:text-base px-5 py-2.5 rounded-xl shadow transition duration-200">
+                    <i class="fas fa-calendar-alt"></i> Create Election
+                    </a>
+                </div>
+
+                <!-- Add Candidates Button -->
+                <a href="{% url 'create_candidate' %}"
+                    class="flex items-center gap-2 h-12 px-5 bg-yellow-600 hover:bg-yellow-700 text-white text-base font-semibold rounded-xl shadow transition duration-200">
                     <i class="fas fa-users"></i> Add Candidates
                 </a>
-            
-            </div>
+
+                <!-- View Results Button (Example additional action) -->
+                <a href=""
+                    class="flex items-center gap-2 h-12 px-5 bg-red-600 hover:bg-red-700 text-white text-base font-semibold rounded-xl shadow transition duration-200">
+                    <i class="fas fa-chart-bar"></i> View Results
+                </a>
+
+                </div>
+
             
             
         

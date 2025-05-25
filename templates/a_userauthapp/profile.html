@@ -53,67 +53,39 @@
   <!-- Personal Information Section -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-gray-700 text-lg leading-relaxed">
 
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-calendar-alt text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Date of Birth:</span><br>{{ profile.date_of_birth }}</p>
-    </div>
+  <div class="flex flex-col items-center text-center">
+    <i class="fas fa-user text-indigo-700 text-2xl mb-3"></i>
+    <p><span class="font-semibold">Username:</span><br>{{ profile.user.username }}</p>
+  </div>
 
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-venus-mars text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Gender:</span><br>{{ profile.gender }}</p>
-    </div>
+  <div class="flex flex-col items-center text-center">
+    <i class="fas fa-envelope text-indigo-700 text-2xl mb-3"></i>
+    <p><span class="font-semibold">Email:</span><br>{{ profile.user.email }}</p>
+  </div>
 
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-ring text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Marital Status:</span><br>{{ profile.staff_marital_status }}</p>
-    </div>
+  <div class="flex flex-col items-center text-center">
+    <i class="fas fa-calendar-alt text-indigo-700 text-2xl mb-3"></i>
+    <p><span class="font-semibold">Date of Birth:</span><br>{{ profile.user.date_of_birth }}</p>
+  </div>
 
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-flag text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Nationality:</span><br>{{ profile.nationality }}</p>
-    </div>
+  <div class="flex flex-col items-center text-center">
+    <i class="fas fa-venus-mars text-indigo-700 text-2xl mb-3"></i>
+    <p><span class="font-semibold">Gender:</span><br>{{ profile.user.gender|title }}</p>
+  </div>
 
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-map-marker-alt text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">State of Origin:</span><br>{{ profile.state_of_origin }}</p>
-    </div>
+  <div class="flex flex-col items-center text-center">
+    <i class="fas fa-university text-indigo-700 text-2xl mb-3"></i>
+    <p><span class="font-semibold">College:</span><br>{{ profile.user.college.name }}</p>
+  </div>
 
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-city text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Local Government Area:</span><br>{{ profile.local_government_area }}</p>
-    </div>
-
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-home text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Permanent Address:</span><br>{{ profile.permanent_address }}</p>
-    </div>
-
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-phone-alt text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Phone Number:</span><br>{{ profile.phone_number }}</p>
-    </div>
-
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-envelope text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Institution Email:</span><br>{{ profile.email }}</p>
-    </div>
-
-    <div class="flex flex-col items-center text-center">
-      <i class="fas fa-envelope text-indigo-700 text-2xl mb-3"></i>
-      <p><span class="font-semibold">Personal Email:</span><br>{{ profile.personal_email }}</p>
-    </div>
-
+  <div class="flex flex-col items-center text-center">
+    <i class="fas fa-building text-indigo-700 text-2xl mb-3"></i>
+    <p><span class="font-semibold">Department:</span><br>{{ profile.user.department.name }}</p>
   </div>
 
 </div>
 
-<!-- Inline Keyframes for Background Animation -->
-<style>
-  @keyframes fadebg {
-    0% { background-color: #f9fafb; }
-    50% { background-color: #eef2ff; }
-    100% { background-color: #f9fafb; }
-  }
-</style>
+
+</div>
 
 {% endblock %}

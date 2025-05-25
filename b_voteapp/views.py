@@ -49,6 +49,16 @@ def election_detail(request, pk):
     else:
         status = 'Inactive'
 
+
+    can_vote = (
+    status == 'Active' and
+    request.user.college == election.college and
+    (
+        (election.election_type == 'Student Election' and request.user.is_student) or
+        (election.election_type == 'Staff Election' and request.user.is_staff)
+    )   
+    )   
+
     # Tie-aware ranking
     ranking = {}
     current_rank = 0
@@ -72,11 +82,13 @@ def election_detail(request, pk):
         ranking[candidate.id] = rank_label
 
     context = {
-        'election': election,
-        'status': status,
-        'candidates': candidates,
-        'ranking': ranking,
+    'election': election,
+    'status': status,
+    'candidates': candidates,
+    'ranking': ranking,
+    'can_vote': can_vote,
     }
+
     return render(request, 'b_voteapp/election_detail.html', context)
 
 
@@ -182,7 +194,8 @@ def blockchain_explorer(request):
                 'candidate_name': candidate.name if candidate else "Unknown",
                 'candidate_role': candidate.role if candidate else "Unknown",
                 'candidate_party': candidate.party if candidate else "Unknown",
-                'election_name': election.name if election else "Unknown",
+                'election_name': election.election_name if election else "Unknown",
+                'election_type': election.election_type if election else "Unknown",
                 'timestamp': datetime.fromtimestamp(vote_data['timestamp'])  # convert to datetime object
             })
 

@@ -7,7 +7,7 @@
   <div class="w-full max-w-6xl mx-auto px-6 sm:px-12 md:px-16 lg:px-24 bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl shadow-2xl text-center animate-fade-in-up">
 
     <!-- Election Name -->
-    <h1 class="text-5xl font-extrabold mb-6 text-slate-800 tracking-tight font1 mt-10">{{ election.name }}</h1>
+    <h1 class="text-5xl font-extrabold mb-6 text-slate-800 tracking-tight font1 mt-10">{{ election.election_name }}</h1>
 
     <!-- Status Badge -->
     <div class="mb-8">
@@ -21,7 +21,17 @@
 
     <!-- Election Image -->
     <img src="{{ election.image.url }}" alt="{{ election.name }}"
-         class="w-full max-w-4xl h-96 object-cover rounded-xl mx-auto mb-8 shadow-lg border-4 border-white" />
+         class="w-full max-w-4xl h-96 object-cover rounded-xl mx-auto mb-8 shadow-lg border-4 border-white" 
+    />
+
+
+    <div class="mb-10 p-5 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 border border-indigo-200 rounded-xl shadow-sm">
+      <p class="text-gray-800 text-base leading-relaxed font-medium">
+        <i class="fas fa-quote-left text-indigo-400 mr-2"></i>
+        {{ election.election_description }}
+      </p>
+    </div>
+
 
     <!-- Dates -->
     <div class="flex flex-col sm:flex-row justify-center sm:space-x-20 space-y-4 sm:space-y-0 mb-10 text-gray-700 text-sm font-medium">
@@ -39,11 +49,20 @@
     <div class="space-x-4 mb-12 flex flex-wrap justify-center">
 
       {% if status == 'Active' %}
-      <a href="{% url 'b_voteapp:cast_vote' %}"
-        class="mb-5 inline-block bg-green-600 text-white px-8 py-3 rounded-xl hover:bg-green-700 transition font-semibold shadow-lg">
-        🗳️ Vote Now
-      </a>
+        {% if can_vote %}
+          <a href="{% url 'b_voteapp:cast_vote' %}"
+            class="mb-5 inline-block bg-green-600 text-white px-8 py-3 rounded-xl hover:bg-green-700 transition font-semibold shadow-lg">
+            🗳️ Vote Now
+          </a>
+        {% else %}
+          <p class="text-red-500 font-medium my-5">⚠️ You’re not eligible to vote in this election.</p>
+        {% endif %}
+      {% elif status == 'Inactive' %}
+        <p class="text-yellow-500 font-medium my-5">⚠️ This election has not started yet.</p>
+      {% elif status == 'Ended' %}
+        <p class="text-gray-500 font-medium my-5">⚠️ This election has ended.</p>
       {% endif %}
+
 
       {% if request.user.is_superuser %}
       <a href="{% url 'edit_election' election.pk %}"

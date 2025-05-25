@@ -5,82 +5,174 @@
 
 {% block content %}
 
-    <section class="flex items-center justify-center bg-slate-200  text-white px-4 py-15">
-        <div class="w-full max-w-2xl bg-gray-800 p-10 rounded-2xl shadow-2xl">
-            <h2 class="text-4xl font-extrabold text-center mb-8 font1">Create Your Account</h2>
+<section class="flex items-center justify-center bg-gradient-to-br from-indigo-900 via-blue-900 to-gray-900 text-dark ">
+  <div class="card w-full max-w-5xl bg-gray-800 p-10 rounded-2xl shadow-2xl animate-fadeInUp">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow-lg animate-fadeInUp">
+        <i class="fas fa-user-plus mr-3"></i> Register Voter
+    </h2>
 
-            <form method="POST" class="space-y-7">
-            {% csrf_token %}
-            {{ signup_form.non_field_errors }}
 
-            {% for field in signup_form %}
-                <div>
-                    <label class="block mb-1 text-sm font-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    <form method="POST" class="space-y-7">
+      {% csrf_token %}
+      {{ signup_form.non_field_errors }}
 
-                    <div class="relative">
-                        <!-- Icon based on field name -->
-                        {% if 'username' in field.name %}
-                        <i class="fas fa-user-circle absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                        {% elif 'email' in field.name %}
-                        <i class="fas fa-at absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                        {% elif 'password' in field.name %}
-                        <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                        {% endif %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fadeIn delay-100">
+        {% for field in signup_form %}
+        {% if field.name != 'role' %}
+        <div>
+          <label class="block mb-1 text-sm font-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
 
-                        <!-- Password toggle button -->
-                        {% if 'password' in field.name %}
-                        <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}"
-                                class="w-full pl-12 pr-12 p-3 rounded-lg text-black focus:outline-none"
-                                placeholder="{{ field.label }}">
-                        <button type="button"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 toggle-password"
-                                data-target="{{ field.id_for_label }}">
-                            <i class="fas fa-eye text-lg"></i>
-                        </button>
-                        {% else %}
-                        {{ field|add_class:"w-full pl-12 p-3 rounded-lg text-black focus:outline-none" }}
-                        {% endif %}
-                    </div>
+          <div class="relative">
+            {% if 'username' in field.name %}
+              <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% elif 'email' in field.name %}
+              <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% elif 'password' in field.name %}
+              <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% elif 'first_name' in field.name %}
+              <i class="fas fa-user-tag absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% elif 'last_name' in field.name %}
+              <i class="fas fa-user-circle absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% elif 'dob' in field.name %}
+              <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% elif 'gender' in field.name %}
+              <i class="fas fa-venus-mars absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% elif 'location' in field.name %}
+              <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400"></i>
+            {% endif %}
 
-                    {% if field.errors %}
-                        <p class="text-red-500 text-sm mt-1">{{ field.errors|striptags }}</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
-
-            <button type="submit"
-                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-300">
-                Register
+            {% if 'password' in field.name %}
+            <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}"
+              class="w-full pl-12 pr-12 p-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="{{ field.label }}">
+            <button type="button"
+              class="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-200 p-1.5 rounded-full text-gray-700 hover:bg-indigo-300 transition toggle-password"
+              data-target="{{ field.id_for_label }}">
+              <i class="fas fa-eye text-sm"></i>
             </button>
-            </form>
+            {% else %}
+              {{ field|add_class:"w-full pl-12 p-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
+            {% endif %}
+          </div>
 
-            <p class="text-center text-gray-400 mt-6 text-sm">
-            Already have an account?
-            <a href="{% url 'a_userauthapp:login' %}" class="text-indigo-400 hover:underline">Log in here</a>
-            </p>
+          {% if field.errors %}
+          <p class="text-red-400 text-sm mt-1">{{ field.errors|striptags }}</p>
+          {% endif %}
         </div>
-    </section>
+        {% endif %}
+        {% endfor %}
+      </div>
 
-    <!-- Password Toggle Script -->
-    <script>
-    const toggleButtons = document.querySelectorAll('.toggle-password');
-    toggleButtons.forEach(button => {
-        button.addEventListener('click', () => {
-        const targetId = button.getAttribute('data-target');
-        const input = document.getElementById(targetId);
-        const icon = button.querySelector('i');
+      <!-- Role selection -->
+      <div class="animate-fadeIn delay-200 text-center">
+        <label class="block mb-1 text-sm font-semibold">Registering as</label>
+        <div class="flex flex-wrap justify-center space-x-6 mt-3">
+          {% for choice in signup_form.role %}
+          <label class="inline-flex items-center">
+            {{ choice.tag }}
+            <span class="ml-2">{{ choice.choice_label }}</span>
+          </label>
+          {% endfor %}
+        </div>
+        {% if signup_form.role.errors %}
+        <p class="text-red-400 text-sm mt-1">{{ signup_form.role.errors|striptags }}</p>
+        {% endif %}
+      </div>
 
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
+      <div class="flex justify-center">
+        <button type="submit"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-12 rounded-xl shadow-md transition duration-300 animate-fadeIn delay-300">
+          Register
+        </button>
+      </div>
+    </form>
+
+    <p class="text-center text-gray-400 mt-6 text-sm animate-fadeIn delay-400">
+      Already have an account?
+      <a href="{% url 'a_userauthapp:login' %}" class="text-indigo-400 hover:underline">Log in here</a>
+    </p>
+  </div>
+</section>
+
+
+
+<!-- Password Toggle Script -->
+<script>
+  const toggleButtons = document.querySelectorAll('.toggle-password');
+  toggleButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.getAttribute('data-target');
+      const input = document.getElementById(targetId);
+      const icon = button.querySelector('i');
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    });
+  });
+</script>
+
+<!-- Custom animations using Tailwind -->
+<style>
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.7s ease-out both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0 }
+    to   { opacity: 1 }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 1s ease forwards;
+  }
+
+  .delay-100 { animation-delay: 0.1s; }
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-400 { animation-delay: 0.4s; }
+</style>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const collegeSelect = document.getElementById("id_college");
+    const departmentSelect = document.getElementById("id_department");
+
+    collegeSelect.addEventListener("change", function() {
+      const collegeId = this.value;
+      fetch(`/ajax/load-departments/?college=${collegeId}`)
+        .then(response => response.json())
+        .then(data => {
+          departmentSelect.innerHTML = '<option value="">---------</option>';
+          data.forEach(function(department) {
+            const option = document.createElement("option");
+            option.value = department.id;
+            option.textContent = department.name;
+            departmentSelect.appendChild(option);
+          });
         });
     });
-    </script>
+  });
+</script>
+
+
 
 {% endblock %}
