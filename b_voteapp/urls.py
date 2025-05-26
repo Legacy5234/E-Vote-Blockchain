@@ -6,7 +6,7 @@ app_name = 'b_voteapp'
 urlpatterns = [
     path('', views.homepage, name='home'),
     path('elections/<int:pk>/', views.election_detail, name='election_detail'),
+    path('cast_vote/<int:election_pk>/', views.cast_vote, name='cast_vote'),
     
-    path('election/vote/', views.cast_vote, name='cast_vote'),
     path('home/explorer/', views.blockchain_explorer, name='blockchain_explorer'),
 ]

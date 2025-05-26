@@ -50,7 +50,7 @@
 
       {% if status == 'Active' %}
         {% if can_vote %}
-          <a href="{% url 'b_voteapp:cast_vote' %}"
+          <a href="{% url 'b_voteapp:cast_vote' election.pk %}"
             class="mb-5 inline-block bg-green-600 text-white px-8 py-3 rounded-xl hover:bg-green-700 transition font-semibold shadow-lg">
             🗳️ Vote Now
           </a>

@@ -96,12 +96,13 @@ def election_detail(request, pk):
 # VOTING VIEW
 #---------------------------------------------------------------------------------------------------------
 @login_required(login_url='a_userauthapp:login')
-def cast_vote(request):
+def cast_vote(request, election_pk):
     voter = get_object_or_404(Voter, user=request.user)
+    election = get_object_or_404(Election, pk=election_pk)
 
-    # Prevent double voting
-    if Vote.objects.filter(voter=voter).exists():
-        messages.success(request, 'You have already voted. Multiple voting not allowed.')
+    # Prevent double voting in this election specifically
+    if Vote.objects.filter(voter=voter, candidate__election=election).exists():
+        messages.success(request, 'You have already voted in this election. Multiple voting not allowed.')
         return redirect('b_voteapp:home')
 
     if request.method == "POST":
@@ -110,9 +111,9 @@ def cast_vote(request):
             return render(request, 'error.html', {'message': "Please select a candidate to vote."})
 
         try:
-            candidate = Candidate.objects.get(id=candidate_id)
+            candidate = Candidate.objects.get(id=candidate_id, election=election)
         except Candidate.DoesNotExist:
-            return render(request, 'error.html', {'message': "Selected candidate does not exist."})
+            return render(request, 'error.html', {'message': "Selected candidate does not exist for this election."})
 
         # Create vote data
         vote_data = {
@@ -160,10 +161,9 @@ def cast_vote(request):
         return redirect('b_voteapp:home')
 
     else:
-        candidates = Candidate.objects.all()
-        return render(request, 'b_voteapp/vote.html', {'candidates': candidates})
-
-
+        # Show only candidates in the current election
+        candidates = Candidate.objects.filter(election=election)
+        return render(request, 'b_voteapp/vote.html', {'candidates': candidates, 'election': election})
 
 #---------------------------------------------------------------------------------------------------------
 # BLOCKCHAIN EXPLORER VIEW
