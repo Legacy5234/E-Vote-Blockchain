@@ -48,10 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     'cloudinary_storage',
     'cloudinary',
-    
+
     # CUSTOM APPS
     'a_userauthapp',
     'b_voteapp',
@@ -105,8 +104,8 @@ DATABASES = {
 POSTGRES_LOCALLY = True
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
-    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
+    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
 
 
 # Password validation
@@ -143,15 +142,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Staticfiles for deployment
+STATIC_ROOT = BASE_DIR /'staticfiles'
+
+MEDIA_URL = 'media/'
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUD_NAME'),
