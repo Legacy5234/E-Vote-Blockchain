@@ -37,4 +37,6 @@ urlpatterns = [
     path('candidates/<int:pk>/edit/', views.edit_candidate, name='edit_candidate'),
     path('candidates/<int:pk>/delete/', views.delete_candidate, name='delete_candidate'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
