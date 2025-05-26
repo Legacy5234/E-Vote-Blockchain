@@ -41,8 +41,8 @@ def create_account(request):
 
             user.save()
 
-            messages.success(request, 'Account Created Successfully..')
-            return redirect('a_userauthapp:login')
+            messages.success(request, 'Voter Registered Successfully..')
+            return redirect('a_userauthapp:account-create')
         else:
             messages.error(request, 'There was an error in creating account..')
     else:
