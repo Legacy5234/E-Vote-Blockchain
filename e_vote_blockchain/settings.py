@@ -47,10 +47,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
+    'django.contrib.staticfiles',
     
     'cloudinary',
     'cloudinary_storage',
-    'django.contrib.staticfiles',
 
     # CUSTOM APPS
     'a_userauthapp',
@@ -59,6 +60,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_cleanup.apps.CleanupConfig',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -105,8 +108,8 @@ DATABASES = {
 POSTGRES_LOCALLY = True
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
-    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
+    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
 
 
 # Password validation
