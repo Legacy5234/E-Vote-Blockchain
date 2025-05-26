@@ -34,18 +34,10 @@ class Voter(models.Model):
 
 
 class Candidate(models.Model):
-    POSITION = (
-        ('President', 'President'),
-        ('Vice President', 'Vice President'),
-        ('Secretary', 'Secretary'),
-        ('Treasurer', 'Treasurer'),
-        ('Sport Director', 'Sport Director'),
-    )
-
     election = models.ForeignKey(Election, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='VoteChain-candidateimage', null=True)
     name = models.CharField(max_length=100)
-    role = models.CharField(max_length=100, choices=POSITION, null=True)
+    role = models.CharField(max_length=100, null=True)
     party = models.CharField(max_length=100)
     description = models.TextField(null=True)
 

@@ -55,7 +55,7 @@ class CandidateForm(forms.ModelForm):
                 'class': 'w-full p-2 border rounded-lg',
                 'placeholder': 'Candidate name'
             }),
-            'role': forms.Select(attrs={
+            'role': forms.TextInput(attrs={
                 'class': 'w-full p-2 border rounded-lg'
             }),
             'party': forms.TextInput(attrs={
@@ -68,3 +68,6 @@ class CandidateForm(forms.ModelForm):
                 'placeholder': 'Brief description...'
             }),
         }
+
+
+
