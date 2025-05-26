@@ -9,7 +9,7 @@
       🗳️ Cast Your Vote
     </h2>
 
-    <form method="POST" action="{% url 'b_voteapp:cast_vote' %}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+    <form method="POST" action="{% url 'b_voteapp:cast_vote' election.pk %}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
       {% csrf_token %}
 
       {% for candidate in candidates %}
