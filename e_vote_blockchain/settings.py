@@ -99,11 +99,11 @@ DATABASES = {
 }
 
 # MYSQL-DATABASE
-MYSQL_LOCALLY = True
+POSTGRES_LOCALLY = True
 
-if ENVIRONMENT == 'production' or MYSQL_LOCALLY == True:
-    DATABASES['default'] = dj_database_url.parse(env('MYSQL_URL'))
-    #DATABASES['default'] = dj_database_url.parse(env('MYSQL_PUBLIC_URL'))
+if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
 
 
 # Password validation
@@ -148,7 +148,7 @@ STATIC_ROOT = BASE_DIR /'staticfiles'
 
 MEDIA_URL = 'media/'
 
-if ENVIRONMENT == 'production' or MYSQL_LOCALLY == True:
+if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
     MEDIA_ROOT = BASE_DIR / 'media'
