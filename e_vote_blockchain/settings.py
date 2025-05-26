@@ -47,9 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'cloudinary_storage',
+    
     'cloudinary',
+    'cloudinary_storage',
+    'django.contrib.staticfiles',
 
     # CUSTOM APPS
     'a_userauthapp',
@@ -154,6 +155,11 @@ if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
     MEDIA_ROOT = BASE_DIR / 'media'
+
+
+import environ
+env = environ.Env()
+environ.Env.read_env()
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUD_NAME'),
