@@ -104,8 +104,8 @@ DATABASES = {
 POSTGRES_LOCALLY = True
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
-    DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
 
 
 # Password validation
@@ -146,11 +146,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
 
-if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+#     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUD_NAME'),
