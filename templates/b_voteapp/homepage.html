@@ -41,7 +41,7 @@
                     <i class="fas fa-align-left mr-2 text-indigo-600"></i> Description
                 </h3>
                 <p class="text-slate-700 text-base leading-relaxed">
-                    {{ election.election_description }}
+                    {{ election.election_description|truncatechars:120 }}
                 </p>
             </div>
 
