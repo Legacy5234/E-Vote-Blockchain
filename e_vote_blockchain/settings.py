@@ -146,8 +146,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/mediavotechain/'
+MEDIA_ROOT = BASE_DIR / 'mediavotechain'
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
