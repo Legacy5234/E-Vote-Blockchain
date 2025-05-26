@@ -15,7 +15,8 @@ import dj_database_url
 
 from environ import Env
 env = Env()
-Env.read_env()
+env.read_env()
+
 ENVIRONMENT = env('ENVIRONMENT', default='production')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
