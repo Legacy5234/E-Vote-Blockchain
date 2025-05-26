@@ -108,8 +108,8 @@ DATABASES = {
 POSTGRES_LOCALLY = True
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
-    DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+    #DATABASES['default'] = dj_database_url.parse(env('DATABASE_PUBLIC_URL'))
 
 
 # Password validation
@@ -159,10 +159,6 @@ if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
 else:
     MEDIA_ROOT = BASE_DIR / 'media'
 
-
-import environ
-env = environ.Env()
-environ.Env.read_env()
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUD_NAME'),
