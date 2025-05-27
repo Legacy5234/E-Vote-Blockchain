@@ -113,7 +113,7 @@ class Voter_User(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(Voter_User, on_delete=models.CASCADE, related_name='profile')
 
-    image = models.ImageField(upload_to='VoteChain-profileimages', null=True, blank=True)
+    image = models.ImageField(upload_to='VoteChain-profileimages/', null=True, blank=True)
 
     bio = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True)

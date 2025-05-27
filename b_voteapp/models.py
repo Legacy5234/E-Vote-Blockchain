@@ -15,7 +15,7 @@ class Election(models.Model):
     election_name = models.CharField(max_length=100)
     election_type = models.CharField(max_length=50, choices=ELECTION_TYPE, null=True)
     election_description = models.TextField(max_length=250, null=True)
-    image = models.ImageField(upload_to='VoteChain-electionimage', null=True)
+    image = models.ImageField(upload_to='VoteChain-electionimage/', null=True)
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
@@ -35,7 +35,7 @@ class Voter(models.Model):
 
 class Candidate(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE, null=True)
-    image = models.ImageField(upload_to='VoteChain-candidateimage', null=True)
+    image = models.ImageField(upload_to='VoteChain-candidateimage/', null=True)
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100, null=True)
     party = models.CharField(max_length=100)
