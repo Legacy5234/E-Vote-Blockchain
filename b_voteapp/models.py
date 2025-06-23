@@ -1,7 +1,5 @@
 from django.db import models
 from a_userauthapp.models import Voter_User, College
-from cloudinary.models import CloudinaryField
-
 import hashlib
 import json
 import time
@@ -16,7 +14,7 @@ class Election(models.Model):
     election_name = models.CharField(max_length=100)
     election_type = models.CharField(max_length=50, choices=ELECTION_TYPE, null=True)
     election_description = models.TextField(max_length=250, null=True)
-    image = CloudinaryField('image', null=True)
+    image = models.ImageField(upload_to='E-Vote-Election Images', null=True)
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
@@ -36,7 +34,7 @@ class Voter(models.Model):
 
 class Candidate(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE, null=True)
-    image = CloudinaryField('image', null=True)
+    image = models.ImageField(upload_to='E-Vote-Candidate Images', null=True)
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100, null=True)
     party = models.CharField(max_length=100)

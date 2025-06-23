@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import dj_database_url
 
-from environs import Env
+from environ import Env
 env = Env()
 Env.read_env()
 ENVIRONMENT = env('ENVIRONMENT', default='production')
@@ -103,7 +103,7 @@ DATABASES = {
     }
 }
 
-# MYSQL-DATABASE
+# POSTGRES-DATABASE
 POSTGRES_LOCALLY = True
 
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
@@ -151,30 +151,18 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Staticfiles for deployment
 STATIC_ROOT = BASE_DIR /'staticfiles'
 
-# MEDIA_URL = 'media/'
+MEDIA_URL = 'media/'
 
-# if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-#     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-# else:
-#     MEDIA_ROOT = BASE_DIR / 'media'
+if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
 
-
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': env('CLOUD_NAME'),
-#     'API_KEY': env('CLOUD_API_KEY'),
-#     'API_SECRET': env('CLOUD_API_SECRET')
-# }
-
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-cloudinary.config(
-    cloud_name = 'dastckn1r',
-    api_key = '785748454759628',
-    api_secret = 'E26XlPXHf7xl6GXB6Rmry8iyMw8',
-)
-
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('CLOUD_API_KEY'),
+    'API_SECRET': env('CLOUD_API_SECRET')
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

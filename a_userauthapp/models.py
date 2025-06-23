@@ -110,12 +110,10 @@ class Voter_User(AbstractBaseUser, PermissionsMixin):
 #---------------------------------------------------------------------------------------------------------
 # PROFILE MODEL
 #---------------------------------------------------------------------------------------------------------
-from cloudinary.models import CloudinaryField
-
 class Profile(models.Model):
     user = models.OneToOneField(Voter_User, on_delete=models.CASCADE, related_name='profile')
 
-    image = CloudinaryField('image', null=True)
+    image = models.ImageField(upload_to='E-Vote-Profile Images', null=True)
 
     bio = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True)
